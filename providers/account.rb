@@ -25,16 +25,19 @@ def load_current_resource
   @my_shell = new_resource.shell || node['user']['default_shell']
   @manage_home = bool(new_resource.manage_home, node['user']['manage_home'])
   @create_group = bool(new_resource.manage_home, node['user']['create_group'])
+  @ssh_keygen = bool(new_resource.ssh_keygen, node['user']['ssh_keygen'])
 end
 
 action :create do
   user_resource             :create
   dir_resource              :create
   authorized_keys_resource  :create
+  keygen_resource           :create
 end
 
 action :remove do
   user_resource             :remove
+  keygen_resource           :delete
   authorized_keys_resource  :delete
   dir_resource              :delete
 end
@@ -43,24 +46,28 @@ action :modify do
   user_resource             :modify
   dir_resource              :create
   authorized_keys_resource  :create
+  keygen_resource           :create
 end
 
 action :manage do
   user_resource             :manage
   dir_resource              :create
   authorized_keys_resource  :create
+  keygen_resource           :create
 end
 
 action :lock do
   user_resource             :lock
   dir_resource              :create
   authorized_keys_resource  :create
+  keygen_resource           :create
 end
 
 action :unlock do
   user_resource             :unlock
   dir_resource              :create
   authorized_keys_resource  :create
+  keygen_resource           :create
 end
 
 private
@@ -130,4 +137,31 @@ def authorized_keys_resource(exec_action)
                 :ssh_keys => ssh_keys
     action      :nothing
   end.run_action(exec_action)
+end
+
+def keygen_resource(exec_action)
+  # avoid variable scoping issues in resource block
+  fqdn, my_home = node['fqdn'], @my_home
+
+  e = execute "create ssh keypair for #{new_resource.username}" do
+    cwd       my_home
+    user      new_resource.username
+    command   <<-KEYGEN.gsub(/^ +/, '')
+      ssh-keygen -t dsa -f #{my_home}/.ssh/id_dsa -N '' \
+        -C '#{new_resource.username}@#{fqdn}-#{Time.now.strftime('%FT%T%z')}'
+      chmod 0600 #{my_home}/.ssh/id_dsa
+      chmod 0644 #{my_home}/.ssh/id_dsa.pub
+    KEYGEN
+    action    :nothing
+
+    creates   "#{my_home}/.ssh/id_dsa"
+  end
+  e.run_action(:run) if exec_action == :create
+
+  ["#{@my_home}/.ssh/id_dsa", "#{@my_home}/.ssh/id_dsa.pub"].each do |keyfile|
+    f = file keyfile do
+      backup  false
+    end
+    f.run_action(exec_action) if exec_action == :delete
+  end
 end
