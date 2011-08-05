@@ -23,6 +23,10 @@ def load_current_resource
   @my_home = new_resource.home || ::File.join(node['user']['home_root'],
                                              new_resource.username)
   @my_shell = new_resource.shell || node['user']['default_shell']
+  @manage_home = case new_resource.manage_home
+                 when 'false',false,nil then false
+                 else true
+                 end
 end
 
 action :create do
@@ -52,12 +56,18 @@ end
 private
 
 def user_resource(exec_action)
+  # avoid variable scoping issues in resource block
+  my_home, my_shell, manage_home = @my_home, @my_shell, @manage_home
+
   user new_resource.username do
     comment   new_resource.comment  if new_resource.comment
     uid       new_resource.comment  if new_resource.uid
     gid       new_resource.gid      if new_resource.gid
-    shell     @my_shell             if @my_shell
-    home      @my_home              if @my_home
+    home      my_home               if my_home
+    shell     my_shell              if my_shell
+    password  new_resource.password if new_resource.password
+    system    new_resource.system_user
+    supports  :manage_home => manage_home
     action :nothing
   end.run_action(exec_action)
 end

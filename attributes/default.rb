@@ -33,3 +33,5 @@ else
   default['user']['home_root']      = nil
   default['user']['default_shell']  = nil
 end
+
+default['user']['manage_home']      = "true"

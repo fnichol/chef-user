@@ -28,8 +28,8 @@ attribute :gid,         :kind_of => String
 attribute :home,        :kind_of => String
 attribute :shell,       :kind_of => String
 attribute :password,    :kind_of => String
-attribute :system,      :kind_of => [true,false], :default => false
-attribute :supports,    :kind_of => Hash
+attribute :system_user, :default => false
+attribute :manage_home, :default => true
 
 def initialize(*args)
   super
