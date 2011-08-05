@@ -156,7 +156,7 @@ def keygen_resource(exec_action)
 
     creates   "#{my_home}/.ssh/id_dsa"
   end
-  e.run_action(:run) if exec_action == :create
+  e.run_action(:run) if @ssh_keygen && exec_action == :create
 
   ["#{@my_home}/.ssh/id_dsa", "#{@my_home}/.ssh/id_dsa.pub"].each do |keyfile|
     f = file keyfile do
