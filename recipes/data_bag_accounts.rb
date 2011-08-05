@@ -1,6 +1,6 @@
 #
 # Cookbook Name:: user
-# Recipe:: accounts
+# Recipe:: data_bag_accounts
 #
 # Copyright 2011, Fletcher Nichol
 #
@@ -17,4 +17,21 @@
 # limitations under the License.
 #
 
+users = begin
+  data_bag('users')
+rescue => ex
+  Chef::Log.warn "Data bag users was not loaded due to: #{ex.inspect}, so skipping"
+  []
+end
 
+users.each do |i|
+  u = data_bag_item('users', i)
+
+  user_account u['id'] do
+    %w{comment uid gid home shell password system_user manage_home create_group
+        ssh_keys ssh_keygen}.each do |attr|
+      send(attr, u[attr]) if u[attr]
+    end
+    action u['action'].to_sym if u['action']
+  end
+end
