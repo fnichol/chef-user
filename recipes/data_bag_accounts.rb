@@ -24,7 +24,7 @@ rescue => ex
   []
 end
 
-users.each do |i|
+Array(node['users']).each do |i|
   u = data_bag_item('users', i)
 
   user_account u['id'] do
