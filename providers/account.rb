@@ -108,13 +108,10 @@ def user_resource(exec_action)
 end
 
 def dir_resource(exec_action)
-  # avoid variable scoping issues in resource block
-  create_group = @create_group
-
   ["#{@my_home}/.ssh", @my_home].each do |dir|
     directory dir do
       owner       new_resource.username
-      group       new_resource.username if create_group
+      group       Etc.getpwnam(new_resource.username).gid
       mode        dir.end_with?('/.ssh') ? '0700' : '2755'
       recursive   true
       action      :nothing
@@ -124,14 +121,13 @@ end
 
 def authorized_keys_resource(exec_action)
   # avoid variable scoping issues in resource block
-  create_group, ssh_keys = @create_group, new_resource.ssh_keys
-  ssh_keys = [ssh_keys] if ssh_keys.kind_of?(String)
+  ssh_keys = Array(new_resource.ssh_keys)
 
   template "#{@my_home}/.ssh/authorized_keys" do
     cookbook    'user'
     source      'authorized_keys.erb'
     owner       new_resource.username
-    group       new_resource.username if create_group
+    group       Etc.getpwnam(new_resource.username).gid
     mode        '0600'
     variables   :user     => new_resource.username,
                 :ssh_keys => ssh_keys
