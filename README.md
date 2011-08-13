@@ -25,7 +25,34 @@ There are no external cookbook dependencies.
 
 # Usage
 
-Coming soon...
+Simply include `recipe[user]` in your run_list and the `user_account`
+resource will be available.
+
+To use `recipe[user::data_bag]`, include it and have a data bag called `users`
+with an item like the following:
+
+    {
+      "id"        : "hsolo",
+      "comment"   : "Han Solo",
+      "home"      : "/opt/hoth/hsolo",
+      "ssh_keys"  : ["123...", "456..."]
+    }
+
+or a user to be removed:
+
+    {
+      "id"      : "lando",
+      "action"  : "remove"
+    }
+
+The data bag recipe will iterate through a list of usernames defined in
+`node['users']` and attempt to pull in the user's information from the data
+bag item. In other words, having:
+
+    node['users'] = ['hsolo']
+
+will set up the `hsolo` user information and not use the `lando` user
+information.
 
 # Recipes
 
