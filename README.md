@@ -1,6 +1,7 @@
 # Description
 
-A convenient Chef LWRP to manage user accounts and SSH keys.
+A convenient Chef LWRP to manage user accounts and SSH keys. This is **not**
+the Opscode *users* cookbook.
 
 # Requirements
 
