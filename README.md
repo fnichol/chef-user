@@ -21,15 +21,15 @@ recipes run on these platforms without error:
 
 ## Cookbooks
 
-There are no external cookbook dependencies.
+There are **no** external cookbook dependencies.
 
 # Usage
 
 Simply include `recipe[user]` in your run_list and the `user_account`
 resource will be available.
 
-To use `recipe[user::data_bag]`, include it and have a data bag called `users`
-with an item like the following:
+To use `recipe[user::data_bag]`, include it in your run_list and have a
+data bag called `"users"` with an item like the following:
 
     {
       "id"        : "hsolo",
