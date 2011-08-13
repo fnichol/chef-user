@@ -34,7 +34,7 @@ This recipe is a no-op and does nothing.
 
 ## data_bag
 
-Processes a list of uses with data drawn from a data bag. The default data bag
+Processes a list of users with data drawn from a data bag. The default data bag
 is `users` and the list of user account to create on this node is set on
 `node['users']`.
 
@@ -124,7 +124,25 @@ ssh_keygen  |Whether or not to generate an SSH keypair for the user. |`node['use
 
 ## Examples
 
-Coming soon...
+### Creating a User Account
+
+    user_account 'hsolo' do
+      comment   'Han Solo'
+      ssh_keys  ['3dc348d9af8027df7b9c...', '2154d3734d609eb5c452...']
+      home      '/opt/hoth/hsolo'
+    end
+
+### Locking a User Account
+
+    user_account 'lando' do
+      action  :lock
+    end
+
+### Removing a User account
+
+    user_account 'obiwan' do
+      action  :remove
+    end
 
 # Development
 
