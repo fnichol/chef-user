@@ -1,6 +1,6 @@
 #
 # Cookbook Name:: user
-# Recipe:: data_bag_accounts
+# Recipe:: data_bag
 #
 # Copyright 2011, Fletcher Nichol
 #
@@ -17,15 +17,16 @@
 # limitations under the License.
 #
 
+bag   = node['user']['data_bag']
 users = begin
-  data_bag('users')
+  data_bag(bag)
 rescue => ex
-  Chef::Log.warn "Data bag users was not loaded due to: #{ex.inspect}, so skipping"
+  Chef::Log.info("Data bag #{bag.join('/')} not found (#{ex}), so skipping")
   []
 end
 
 Array(node['users']).each do |i|
-  u = data_bag_item('users', i)
+  u = data_bag_item(bag, i)
 
   user_account u['id'] do
     %w{comment uid gid home shell password system_user manage_home create_group
