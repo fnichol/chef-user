@@ -23,6 +23,64 @@ recipes run on these platforms without error:
 
 There are **no** external cookbook dependencies.
 
+# Installation
+
+Depending on the situation and use case there are several ways to install
+this cookbook. All the methods listed below assume a tagged version release
+is the target, but omit the tags to get the head of development. A valid
+Chef repository structure like the [Opscode repo][chef_repo] is also assumed.
+
+## From the Opscode Community Platform
+
+To install this cookbook from the Opscode platform, use the *knife* command:
+
+    knife cookbook site install user
+
+## Using Librarian
+
+The [Librarian][librarian] gem aims to be Bundler for your Chef cookbooks.
+Include a reference to the cookbook in a **Cheffile** and run
+`librarian-chef install`. To install with Librarian:
+
+    gem install librarian
+    cd chef-repo
+    librarian-chef init
+    cat >> Cheffile <<END_OF_CHEFFILE
+    cookbook 'user',
+      :git => 'git://github.com/fnichol/chef-user.git', :ref => 'v0.2.0'
+    END_OF_CHEFFILE
+    librarian-chef install
+
+## Using knife-github-cookbooks
+
+The [knife-github-cookbooks][kgc] gem is a plugin for *knife* that supports
+installing cookbooks directly from a GitHub repository. To install with the
+plugin:
+
+    gem install knife-github-cookbooks
+    cd chef-repo
+    knife cookbook github install fnichol/chef-user/v0.2.0
+
+## As a Git Submodule
+
+A common practice (which is getting dated) is to add cookbooks as Git
+submodules. This is accomplishes like so:
+
+    cd chef-repo
+    git submodule add git://github.com/fnichol/chef-user.git cookbooks/user
+    git submodule init && git submodule update
+
+**Note:** the head of development will be linked here, not a tagged release.
+
+## As a Tarball
+
+If the cookbook needs to downloaded temporarily just to be uploaded to a Chef
+Server or Opscode Hosted Chef, then a tarball installation might fit the bill:
+
+    cd chef-repo/cookbooks
+    curl -Ls https://github.com/fnichol/chef-user/tarball/v0.2.0 | tar xfz - && \
+      mv fnichol-chef-user-* user
+
 # Usage
 
 Simply include `recipe[user]` in your run_list and the `user_account`
