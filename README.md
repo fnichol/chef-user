@@ -256,5 +256,9 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 
+[chef_repo]:    https://github.com/opscode/chef-repo
+[kgc]:          https://github.com/websterclay/knife-github-cookbooks#readme
+[librarian]:    https://github.com/applicationsonline/librarian#readme
+
 [repo]:         https://github.com/fnichol/chef-user
 [issues]:       https://github.com/fnichol/chef-user/issues
