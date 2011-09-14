@@ -30,7 +30,7 @@ when 'mac_os_x'
   default['user']['home_root']      = "/Users"
   default['user']['default_shell']  = "/bin/bash"
 else
-  default['user']['home_root']      = nil
+  default['user']['home_root']      = "/home"
   default['user']['default_shell']  = nil
 end
 

@@ -197,7 +197,7 @@ Attribute   |Description |Default value
 ------------|------------|-------------
 username    |**Name attribute:** The name of the user. |`nil`
 comment     |Gecos/Comment field. |`nil`
-uid         |The numberic user id. |`nil`
+uid         |The numeric user id. |`nil`
 gid         |The primary group id. |`nil`
 home        |Home directory location. |`"#{node['user']['home_root']}/#{username}`
 shell       |The login shell. |`node['user']['default_shell']`
