@@ -20,7 +20,7 @@
 #
 
 case platform
-when 'debian','ubuntu','redhat','centos','fedora','freebsd'
+when 'debian','ubuntu','redhat','centos','fedora','freebsd',"suse"
   default['user']['home_root']      = "/home"
   default['user']['default_shell']  = "/bin/bash"
 when 'openbsd'
