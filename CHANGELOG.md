@@ -1,5 +1,9 @@
 ## 0.2.3 (unreleased)
 
+### Bug fixes
+
+* Fix data bag missing error message. ([@fnichol][])
+
 
 ## 0.2.2 (September 14, 2011)
 
