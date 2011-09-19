@@ -21,7 +21,7 @@ bag   = node['user']['data_bag']
 users = begin
   data_bag(bag)
 rescue => ex
-  Chef::Log.info("Data bag #{bag.join('/')} not found (#{ex}), so skipping")
+  Chef::Log.info("Data bag #{bag} not found (#{ex}), so skipping")
   []
 end
 
