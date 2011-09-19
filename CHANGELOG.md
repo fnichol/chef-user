@@ -1,4 +1,7 @@
-## 0.2.3 (unreleased)
+## 0.2.5 (unreleased)
+
+
+## 0.2.4 (September 19, 2011)
 
 ### Bug fixes
 
