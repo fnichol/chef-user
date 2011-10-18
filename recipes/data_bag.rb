@@ -27,8 +27,9 @@ end
 
 Array(node['users']).each do |i|
   u = data_bag_item(bag, i)
+  username = u['username'] || u['id']
 
-  user_account u['id'] do
+  user_account username do
     %w{comment uid gid home shell password system_user manage_home create_group
         ssh_keys ssh_keygen}.each do |attr|
       send(attr, u[attr]) if u[attr]
