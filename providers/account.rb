@@ -24,7 +24,7 @@ def load_current_resource
     "#{node['user']['home_root']}/#{new_resource.username}"
   @my_shell = new_resource.shell || node['user']['default_shell']
   @manage_home = bool(new_resource.manage_home, node['user']['manage_home'])
-  @create_group = bool(new_resource.manage_home, node['user']['create_group'])
+  @create_group = bool(new_resource.create_group, node['user']['create_group'])
   @ssh_keygen = bool(new_resource.ssh_keygen, node['user']['ssh_keygen'])
 end
 
@@ -36,10 +36,10 @@ action :create do
 end
 
 action :remove do
-  user_resource             :remove
   keygen_resource           :delete
   authorized_keys_resource  :delete
   dir_resource              :delete
+  user_resource             :remove  
 end
 
 action :modify do
@@ -154,10 +154,12 @@ def keygen_resource(exec_action)
   end
   e.run_action(:run) if @ssh_keygen && exec_action == :create
 
-  ["#{@my_home}/.ssh/id_dsa", "#{@my_home}/.ssh/id_dsa.pub"].each do |keyfile|
-    f = file keyfile do
-      backup  false
+  if exec_action == :delete then
+    ["#{@my_home}/.ssh/id_dsa", "#{@my_home}/.ssh/id_dsa.pub"].each do |keyfile|
+      file keyfile do
+        backup  false
+        action :delete
+      end
     end
-    f.run_action(exec_action) if exec_action == :delete
   end
 end
