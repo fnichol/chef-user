@@ -26,7 +26,7 @@ rescue => ex
 end
 
 Array(node['users']).each do |i|
-  u = data_bag_item(bag, i)
+  u = data_bag_item(bag, i.gsub(/[.]/, '-'))
   username = u['username'] || u['id']
 
   user_account username do
