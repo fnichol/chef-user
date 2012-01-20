@@ -1,4 +1,11 @@
-## 0.2.7 (unreleased)
+## 0.2.9 (unreleased)
+
+
+## 0.2.8 (January 20, 2012)
+
+### Improvments
+
+* Handle user names with periods in them. ([@fnichol][])
 
 
 ## 0.2.6 (October 18, 2011)
