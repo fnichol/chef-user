@@ -180,6 +180,10 @@ by the `data_bag` recipe to use as a database of user accounts. The default is
 
 ## user_account
 
+**Note:** in order to use the `password` attribute, you must have the
+[ruby-shadow gem][ruby-shadow_gem] installed. On Debian/Ubuntu you can get
+this by installing the "libshadow-ruby1.8" package.
+
 ## Actions
 
 Action    |Description                   |Default
@@ -259,6 +263,7 @@ limitations under the License.
 [chef_repo]:    https://github.com/opscode/chef-repo
 [kgc]:          https://github.com/websterclay/knife-github-cookbooks#readme
 [librarian]:    https://github.com/applicationsonline/librarian#readme
+[ruby-shadow_gem]:  https://rubygems.org/gems/ruby-shadow
 
 [repo]:         https://github.com/fnichol/chef-user
 [issues]:       https://github.com/fnichol/chef-user/issues
