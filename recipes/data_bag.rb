@@ -18,13 +18,8 @@
 #
 
 bag   = node['user']['data_bag']
-users = begin
-  data_bag(bag)
-rescue => ex
-  Chef::Log.info("Data bag #{bag} not found (#{ex}), so skipping")
-  []
-end
 
+# only manage the subset of users defined in node['users']
 Array(node['users']).each do |i|
   u = data_bag_item(bag, i.gsub(/[.]/, '-'))
   username = u['username'] || u['id']
