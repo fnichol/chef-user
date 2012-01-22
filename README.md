@@ -154,7 +154,7 @@ Whether or not to to create a group with the same name as the user by default.
 Each resource can override this value. The are 2 valid states:
 
 * `"true"`, `true`, or `"yes"`: will create a group for the user by default.
-* `"false"`, `false`, or `"no"`: will create a group for the user by default.
+* `"false"`, `false`, or `"no"`: will not create a group for the user by default.
 
 The default is `true`.
 
@@ -165,7 +165,7 @@ resource can override this value. There are 2 valid states:
 
 * `"true"`, `true`, or `"yes"`: will generate an SSH keypair when the account
   is created.
-* `"false"`, `false`, or `"no"`: will generate an SSH keypair when the account
+* `"false"`, `false`, or `"no"`: will not generate an SSH keypair when the account
   is created.
 
 The default is `true`.
