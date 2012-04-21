@@ -20,13 +20,13 @@
 #
 
 case platform
-when 'debian','ubuntu','redhat','centos','fedora','freebsd',"suse"
+when 'debian','ubuntu','redhat','centos','amazon','scientific','fedora','freebsd','suse'
   default['user']['home_root']      = "/home"
   default['user']['default_shell']  = "/bin/bash"
 when 'openbsd'
   default['user']['home_root']      = "/home"
   default['user']['default_shell']  = "/bin/ksh"
-when 'mac_os_x'
+when 'mac_os_x', 'mac_os_x_server'
   default['user']['home_root']      = "/Users"
   default['user']['default_shell']  = "/bin/bash"
 else
