@@ -1,0 +1,6 @@
+source "https://rubygems.org"
+
+gem 'rake'
+gem 'minitest'
+gem 'chef', (ENV['CHEF_VERSION'] ? ENV['CHEF_VERSION'] : '~> 0.10.8')
+gem 'foodcritic', :platforms => :ruby_19
