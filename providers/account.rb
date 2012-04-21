@@ -39,7 +39,7 @@ action :remove do
   keygen_resource           :delete
   authorized_keys_resource  :delete
   dir_resource              :delete
-  user_resource             :remove  
+  user_resource             :remove
 end
 
 action :modify do
@@ -91,7 +91,7 @@ def user_resource(exec_action)
   # avoid variable scoping issues in resource block
   my_home, my_shell, manage_home = @my_home, @my_shell, @manage_home
 
-  user new_resource.username do
+  r = user new_resource.username do
     comment   new_resource.comment  if new_resource.comment
     uid       new_resource.uid      if new_resource.uid
     gid       new_resource.gid      if new_resource.gid
@@ -101,7 +101,9 @@ def user_resource(exec_action)
     system    new_resource.system_user
     supports  :manage_home => manage_home
     action    :nothing
-  end.run_action(exec_action)
+  end
+  r.run_action(exec_action)
+  new_resource.updated_by_last_action(true) if r.updated_by_last_action?
 
   # fixes CHEF-1699
   Etc.endgrent
@@ -109,13 +111,15 @@ end
 
 def dir_resource(exec_action)
   ["#{@my_home}/.ssh", @my_home].each do |dir|
-    directory dir do
+    r = directory dir do
       owner       new_resource.username
       group       Etc.getpwnam(new_resource.username).gid
       mode        dir =~ %r{/\.ssh$} ? '0700' : '2755'
       recursive   true
       action      :nothing
-    end.run_action(exec_action)
+    end
+    r.run_action(exec_action)
+    new_resource.updated_by_last_action(true) if r.updated_by_last_action?
   end
 end
 
@@ -123,7 +127,7 @@ def authorized_keys_resource(exec_action)
   # avoid variable scoping issues in resource block
   ssh_keys = Array(new_resource.ssh_keys)
 
-  template "#{@my_home}/.ssh/authorized_keys" do
+  r = template "#{@my_home}/.ssh/authorized_keys" do
     cookbook    'user'
     source      'authorized_keys.erb'
     owner       new_resource.username
@@ -132,7 +136,9 @@ def authorized_keys_resource(exec_action)
     variables   :user     => new_resource.username,
                 :ssh_keys => ssh_keys
     action      :nothing
-  end.run_action(exec_action)
+  end
+  r.run_action(exec_action)
+  new_resource.updated_by_last_action(true) if r.updated_by_last_action?
 end
 
 def keygen_resource(exec_action)
@@ -153,13 +159,15 @@ def keygen_resource(exec_action)
     creates   "#{my_home}/.ssh/id_dsa"
   end
   e.run_action(:run) if @ssh_keygen && exec_action == :create
+  new_resource.updated_by_last_action(true) if e.updated_by_last_action?
 
   if exec_action == :delete then
     ["#{@my_home}/.ssh/id_dsa", "#{@my_home}/.ssh/id_dsa.pub"].each do |keyfile|
-      file keyfile do
+      r = file keyfile do
         backup  false
         action :delete
       end
+      new_resource.updated_by_last_action(true) if r.updated_by_last_action?
     end
   end
 end
