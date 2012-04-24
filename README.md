@@ -1,92 +1,16 @@
-# Description
+# <a name="title"></a> chef-user [![Build Status](https://secure.travis-ci.org/fnichol/chef-user.png?branch=master)](http://travis-ci.org/fnichol/chef-user)
+
+## <a name="description"></a> Description
 
 A convenient Chef LWRP to manage user accounts and SSH keys. This is **not**
 the Opscode *users* cookbook.
 
-# Requirements
+## <a name="usage"></a> Usage
 
-## Chef
-
-Tested on 0.10.2 but newer and older version should work just fine. File an
-[issue][issues] if this isn't the case.
-
-## Platform
-
-The following platforms have been tested with this cookbook, meaning that the
-recipes run on these platforms without error:
-
-* ubuntu
-* debian
-* mac_os_x
-
-## Cookbooks
-
-There are **no** external cookbook dependencies.
-
-# Installation
-
-Depending on the situation and use case there are several ways to install
-this cookbook. All the methods listed below assume a tagged version release
-is the target, but omit the tags to get the head of development. A valid
-Chef repository structure like the [Opscode repo][chef_repo] is also assumed.
-
-## From the Opscode Community Platform
-
-To install this cookbook from the Opscode platform, use the *knife* command:
-
-    knife cookbook site install user
-
-## Using Librarian-Chef
-
-[Librarian-Chef][librarian] is a bundler for your Chef cookbooks.
-Include a reference to the cookbook in a [Cheffile][cheffile] and run
-`librarian-chef install`. To install Librarian-Chef:
-
-    gem install librarian
-    cd chef-repo
-    librarian-chef init
-    cat >> Cheffile <<END_OF_CHEFFILE
-    cookbook 'user',
-      :git => 'git://github.com/fnichol/chef-user.git', :ref => 'v0.2.10'
-    END_OF_CHEFFILE
-    librarian-chef install
-
-## Using knife-github-cookbooks
-
-The [knife-github-cookbooks][kgc] gem is a plugin for *knife* that supports
-installing cookbooks directly from a GitHub repository. To install with the
-plugin:
-
-    gem install knife-github-cookbooks
-    cd chef-repo
-    knife cookbook github install fnichol/chef-user/v0.2.10
-
-## As a Git Submodule
-
-A common practice (which is getting dated) is to add cookbooks as Git
-submodules. This is accomplishes like so:
-
-    cd chef-repo
-    git submodule add git://github.com/fnichol/chef-user.git cookbooks/user
-    git submodule init && git submodule update
-
-**Note:** the head of development will be linked here, not a tagged release.
-
-## As a Tarball
-
-If the cookbook needs to downloaded temporarily just to be uploaded to a Chef
-Server or Opscode Hosted Chef, then a tarball installation might fit the bill:
-
-    cd chef-repo/cookbooks
-    curl -Ls https://github.com/fnichol/chef-user/tarball/v0.2.10 | tar xfz - && \
-      mv fnichol-chef-user-* user
-
-# Usage
-
-Simply include `recipe[user]` in your run_list and the `user_account`
+Simply include `recipe[user]` in your run\_list and the `user_account`
 resource will be available.
 
-To use `recipe[user::data_bag]`, include it in your run_list and have a
+To use `recipe[user::data_bag]`, include it in your run\_list and have a
 data bag called `"users"` with an item like the following:
 
     {
@@ -112,33 +36,111 @@ bag item. In other words, having:
 will set up the `hsolo` user information and not use the `lando` user
 information.
 
-# Recipes
+## <a name="requirements"></a> Requirements
 
-## default
+### <a name="requirements-chef"></a> Chef
+
+Tested on 0.10.8 but newer and older version should work just fine. File an
+[issue][issues] if this isn't the case.
+
+### <a name="requirements-platform"></a> Platform
+
+The following platforms have been tested with this cookbook, meaning that the
+recipes run on these platforms without error:
+
+* ubuntu
+* debian
+* mac_os_x
+
+### <a name="requirements-cookbooks"></a> Cookbooks
+
+There are **no** external cookbook dependencies.
+
+## <a name="installation"></a> Installation
+
+Depending on the situation and use case there are several ways to install
+this cookbook. All the methods listed below assume a tagged version release
+is the target, but omit the tags to get the head of development. A valid
+Chef repository structure like the [Opscode repo][chef_repo] is also assumed.
+
+### <a name="installation-platform"></a> From the Opscode Community Platform
+
+To install this cookbook from the Opscode platform, use the *knife* command:
+
+    knife cookbook site install user
+
+### <a name="installation-librarian"></a> Using Librarian-Chef
+
+[Librarian-Chef][librarian] is a bundler for your Chef cookbooks.
+Include a reference to the cookbook in a [Cheffile][cheffile] and run
+`librarian-chef install`. To install Librarian-Chef:
+
+    gem install librarian
+    cd chef-repo
+    librarian-chef init
+    cat >> Cheffile <<END_OF_CHEFFILE
+    cookbook 'user',
+      :git => 'git://github.com/fnichol/chef-user.git', :ref => 'v0.2.10'
+    END_OF_CHEFFILE
+    librarian-chef install
+
+### <a name="installation-kgc"></a> Using knife-github-cookbooks
+
+The [knife-github-cookbooks][kgc] gem is a plugin for *knife* that supports
+installing cookbooks directly from a GitHub repository. To install with the
+plugin:
+
+    gem install knife-github-cookbooks
+    cd chef-repo
+    knife cookbook github install fnichol/chef-user/v0.2.10
+
+### <a name="installation-gitsubmodule"></a> As a Git Submodule
+
+A common practice (which is getting dated) is to add cookbooks as Git
+submodules. This is accomplishes like so:
+
+    cd chef-repo
+    git submodule add git://github.com/fnichol/chef-user.git cookbooks/user
+    git submodule init && git submodule update
+
+**Note:** the head of development will be linked here, not a tagged release.
+
+### <a name="installation-tarball"></a> As a Tarball
+
+If the cookbook needs to downloaded temporarily just to be uploaded to a Chef
+Server or Opscode Hosted Chef, then a tarball installation might fit the bill:
+
+    cd chef-repo/cookbooks
+    curl -Ls https://github.com/fnichol/chef-user/tarball/v0.2.10 | tar xfz - && \
+      mv fnichol-chef-user-* user
+
+## <a name="recipes"></a> Recipes
+
+### <a name="recipes-default"></a> default
 
 This recipe is a no-op and does nothing.
 
-## data_bag
+### <a name="recipes-data-bag"></a> default
 
 Processes a list of users with data drawn from a data bag. The default data bag
 is `users` and the list of user account to create on this node is set on
 `node['users']`.
 
-# Attributes
+## <a name="attributes"></a> Attributes
 
-## `home_root`
+### <a name="attributes-home-root"></a> home_root
 
 The default parent path of a user's home directory. Each resource can override
 this value which varies by platform. Generally speaking, the default value is
 `"/home"`.
 
-## `default_shell`
+### <a name="attributes-default-shell"></a> default_shell
 
 The default user shell given to a user. Each resource can override this value
 which varies by platform. Generally speaking, the default value is
 `"/bin/bash"`.
 
-## `manage_home`
+### <a name="attributes-manage-home"></a> manage_home
 
 Whether of not to manage the home directory of a user by default. Each resource
 can override this value. The are 2 valid states:
@@ -148,7 +150,7 @@ can override this value. The are 2 valid states:
 
 The default is `true`.
 
-## `create_user_group`
+### <a name="attributes-create-user-group"></a> create_user_group
 
 Whether or not to to create a group with the same name as the user by default.
 Each resource can override this value. The are 2 valid states:
@@ -158,7 +160,7 @@ Each resource can override this value. The are 2 valid states:
 
 The default is `true`.
 
-## `ssh_keygen`
+### <a name="attributes-ssh-keygen"></a> ssh_keygen
 
 Whether or not to generate an SSH keypair for the user by default. Each
 resource can override this value. There are 2 valid states:
@@ -170,21 +172,21 @@ resource can override this value. There are 2 valid states:
 
 The default is `true`.
 
-## `data_bag`
+### <a name="attributes-data-bag"></a> data_bag
 
 The data bag name containing a group of user account information. This is used
 by the `data_bag` recipe to use as a database of user accounts. The default is
 `"users"`.
 
-# Resource and Providers
+## <a name="lwrps"></a> Resources and Providers
 
-## user_account
+### <a name="lwrps-ua"></a> user_account
 
 **Note:** in order to use the `password` attribute, you must have the
 [ruby-shadow gem][ruby-shadow_gem] installed. On Debian/Ubuntu you can get
 this by installing the "libshadow-ruby1.8" package.
 
-## Actions
+### <a name="lwrps-ua-actions"></a> Actions
 
 Action    |Description                   |Default
 ----------|------------------------------|-------
@@ -195,7 +197,7 @@ manage    |Manage the user account. |
 lock      |Lock the user's password. |
 unlock    |Unlock the user's password. |
 
-## Attributes
+### <a name="lwrps-ua-attributes"></a> Attributes
 
 Attribute   |Description |Default value
 ------------|------------|-------------
@@ -212,9 +214,9 @@ create_group |Whether or not to to create a group with the same name as the user
 ssh_keys    |A **String** or **Array** of SSH public keys to populate the user's `.ssh/authorized_keys` file. |`[]`
 ssh_keygen  |Whether or not to generate an SSH keypair for the user. |`node['user']['ssh_keygen']`
 
-## Examples
+#### <a name="lwrps-ua-examples"></a> Examples
 
-### Creating a User Account
+##### Creating a User Account
 
     user_account 'hsolo' do
       comment   'Han Solo'
@@ -222,19 +224,19 @@ ssh_keygen  |Whether or not to generate an SSH keypair for the user. |`node['use
       home      '/opt/hoth/hsolo'
     end
 
-### Locking a User Account
+##### Locking a User Account
 
     user_account 'lando' do
       action  :lock
     end
 
-### Removing a User account
+##### Removing a User account
 
     user_account 'obiwan' do
       action  :remove
     end
 
-# Development
+## <a name="development"></a> Development
 
 * Source hosted at [GitHub][repo]
 * Report issues/Questions/Feature requests on [GitHub Issues][issues]
@@ -242,7 +244,7 @@ ssh_keygen  |Whether or not to generate an SSH keypair for the user. |`node['use
 Pull requests are very welcome! Make sure your patches are well tested.
 Ideally create a topic branch for every separate change you make.
 
-# License and Author
+## <a name="license"></a> License and Author
 
 Author:: Fletcher Nichol (<fnichol@nichol.ca>)
 
