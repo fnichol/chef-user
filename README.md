@@ -261,6 +261,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 
 [chef_repo]:    https://github.com/opscode/chef-repo
+[cheffile]:     https://github.com/applicationsonline/librarian/blob/master/lib/librarian/chef/templates/Cheffile
 [kgc]:          https://github.com/websterclay/knife-github-cookbooks#readme
 [librarian]:    https://github.com/applicationsonline/librarian#readme
 [ruby-shadow_gem]:  https://rubygems.org/gems/ruby-shadow
