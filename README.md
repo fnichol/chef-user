@@ -36,11 +36,11 @@ To install this cookbook from the Opscode platform, use the *knife* command:
 
     knife cookbook site install user
 
-## Using Librarian
+## Using Librarian-Chef
 
-The [Librarian][librarian] gem aims to be Bundler for your Chef cookbooks.
-Include a reference to the cookbook in a **Cheffile** and run
-`librarian-chef install`. To install with Librarian:
+[Librarian-Chef][librarian] is a bundler for your Chef cookbooks.
+Include a reference to the cookbook in a [Cheffile][cheffile] and run
+`librarian-chef install`. To install Librarian-Chef:
 
     gem install librarian
     cd chef-repo
