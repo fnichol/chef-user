@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script src="js/libs/documentup.js"></script>
+    <script>
+      DocumentUp.document({
+        repo:         "fnichol/chef-user",
+        twitter:      "fnichol",
+        afterRender:  function() {
+          $('#sections a').html(function(index, heading) {
+            return heading.replace(/^&lt;.*\/a&gt; /, '');
+          });
+        }
+      });
+    </script>
+  </head>
+  <body></body>
+</html>
