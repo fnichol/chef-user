@@ -188,31 +188,129 @@ this by installing the "libshadow-ruby1.8" package.
 
 ### <a name="lwrps-ua-actions"></a> Actions
 
-Action    |Description                   |Default
-----------|------------------------------|-------
-create    |Create the user, its home directory, `.ssh/authorized_keys`, and `.ssh/{id_dsa,id_dsa.pub}`. |Yes
-remove    |Remove the user account. |
-modify    |Modiy the user account. |
-manage    |Manage the user account. |
-lock      |Lock the user's password. |
-unlock    |Unlock the user's password. |
+<table>
+  <thead>
+    <tr>
+      <th>Action</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>create</td>
+      <td>
+        Create the user, its home directory, <code>.ssh/authorized_keys</code>,
+        and <code>.ssh/{id_dsa,id_dsa.pub}</code>.
+      </td>
+      <td>Yes</td>
+    </tr>
+    <tr>
+      <td>remove</td>
+      <td>Remove the user account.</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>modify</td>
+      <td>Modiy the user account.</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>manage</td>
+      <td>Manage the user account.</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>lock</td>
+      <td>Lock the user's password.</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>unlock</td>
+      <td>Unlock the user's password.</td>
+      <td>&nbsp;</td>
+    </tr>
+  </tbody>
+</table>
 
 ### <a name="lwrps-ua-attributes"></a> Attributes
 
-Attribute   |Description |Default value
-------------|------------|-------------
-username    |**Name attribute:** The name of the user. |`nil`
-comment     |Gecos/Comment field. |`nil`
-uid         |The numeric user id. |`nil`
-gid         |The primary group id. |`nil`
-home        |Home directory location. |`"#{node['user']['home_root']}/#{username}`
-shell       |The login shell. |`node['user']['default_shell']`
-password    |Shadow hash of password. |`nil`
-system_user |Whether or not to create a system user. |`false`
-manage_home |Whether or not to manage the home directory. |`true`
-create_group |Whether or not to to create a group with the same name as the user. |`node['user']['create_group']`
-ssh_keys    |A **String** or **Array** of SSH public keys to populate the user's `.ssh/authorized_keys` file. |`[]`
-ssh_keygen  |Whether or not to generate an SSH keypair for the user. |`node['user']['ssh_keygen']`
+<table>
+  <thead>
+    <tr>
+      <th>Attribute</th>
+      <th>Description</th>
+      <th>Default Value</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>username</td>
+      <td><b>Name attribute:</b> The name of the user.</td>
+      <td><code>nil</code></td>
+    </tr>
+    <tr>
+      <td>comment</td>
+      <td>Gecos/Comment field.</td>
+      <td><code>nil</code></td>
+    </tr>
+    <tr>
+      <td>uid</td>
+      <td>The numeric user id.</td>
+      <td><code>nil</code></td>
+    </tr>
+    <tr>
+      <td>gid</td>
+      <td>The primary group id.</td>
+      <td><code>nil</code></td>
+    </tr>
+    <tr>
+      <td>home</td>
+      <td>Home directory location.</td>
+      <td><code>"#{node['user']['home_root']}/#{username}</code></td>
+    </tr>
+    <tr>
+      <td>shell</td>
+      <td>The login shell.</td>
+      <td><code>node['user']['default_shell']</code></td>
+    </tr>
+    <tr>
+      <td>password</td>
+      <td>Shadow hash of password.</td>
+      <td><code>nil</code></td>
+    </tr>
+    <tr>
+      <td>system_user</td>
+      <td>Whether or not to create a system user.</td>
+      <td><code>false</code></td>
+    </tr>
+    <tr>
+      <td>manage_home</td>
+      <td>Whether or not to manage the home directory.</td>
+      <td><code>true</code></td>
+    </tr>
+    <tr>
+      <td>create_group</td>
+      <td>
+        Whether or not to to create a group with the same name as the user.
+      </td>
+      <td><code>node['user']['create_group']</code></td>
+    </tr>
+    <tr>
+      <td>ssh_keys</td>
+      <td>
+        A <b>String</b> or <b>Array</b> of SSH public keys to populate the
+        user's <code>.ssh/authorized_keys</code> file.
+      </td>
+      <td><code>[]</code></td>
+    </tr>
+    <tr>
+      <td>ssh_keygen</td>
+      <td>Whether or not to generate an SSH keypair for the user.</td>
+      <td><code>node['user']['ssh_keygen']</code></td>
+    </tr>
+  </tbody>
+</table>
 
 #### <a name="lwrps-ua-examples"></a> Examples
 
