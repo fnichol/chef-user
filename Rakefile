@@ -3,7 +3,7 @@ require 'rake/testtask'
 
 Rake::TestTask.new do |t|
   t.libs.push "lib"
-  t.test_files = FileList['.test/**/*_spec.rb']
+  t.test_files = FileList['test/**/*_spec.rb']
   t.verbose = true
 end
 
@@ -11,7 +11,7 @@ desc "Runs foodcritc linter"
 task :foodcritic do
   if Gem::Version.new("1.9.2") <= Gem::Version.new(RUBY_VERSION.dup)
     sandbox = File.expand_path(
-      File.join(File.dirname(__FILE__), %w{.. .. tmp foodcritic cookbook}))
+      File.join(File.dirname(__FILE__), %w{tmp foodcritic cookbook}))
     prepare_foodcritic_sandbox(sandbox)
 
     sh "foodcritic --epic-fail any #{File.dirname(sandbox)}"
