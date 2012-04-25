@@ -1,5 +1,16 @@
 ## 0.2.11 (unreleased)
 
+### Bug fixes
+
+* user_account LWRP now notifies when updated (FC017). ([@fnichol][])
+* Add plaform equivalents in default attrs (FC024). ([@fnichol][])
+
+### Improvements
+
+* Add unit testing for user_account resource. ([@fnichol][])
+* Add TravisCI to run test suite and Foodcritic linter. ([@fnichol][])
+* Reorganize README with section links. ([@fnichol][])
+* Pull request [#7](https://github.com/fnichol/chef-user/pull/7): Fix semantic issues in README. ([@nathenharvey][])
 
 ## 0.2.10 (January 20, 2012)
 
@@ -53,4 +64,5 @@
 The initial release.
 
 [@fnichol]: https://github.com/fnichol
+[@nathenharvey]: https://github.com/nathenharvey
 [@nessche]: https://github.com/nessche
