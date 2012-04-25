@@ -5,6 +5,9 @@
 A convenient Chef LWRP to manage user accounts and SSH keys. This is **not**
 the Opscode *users* cookbook.
 
+* Github: https://github.com/fnichol/chef-user
+* Opscode Community Site: http://community.opscode.com/cookbooks/user
+
 ## <a name="usage"></a> Usage
 
 Simply include `recipe[user]` in your run\_list and the `user_account`
