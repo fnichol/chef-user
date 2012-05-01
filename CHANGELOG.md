@@ -1,4 +1,7 @@
-## 0.2.11 (unreleased)
+## 0.2.13 (unrelease)
+
+
+## 0.2.12 (May 1, 2012)
 
 ### Bug fixes
 
@@ -8,9 +11,11 @@
 ### Improvements
 
 * Add unit testing for user_account resource. ([@fnichol][])
+* Add unit testing for attributes. ([@fnichol][])
 * Add TravisCI to run test suite and Foodcritic linter. ([@fnichol][])
 * Reorganize README with section links. ([@fnichol][])
 * Pull request [#7](https://github.com/fnichol/chef-user/pull/7): Fix semantic issues in README. ([@nathenharvey][])
+
 
 ## 0.2.10 (January 20, 2012)
 
