@@ -81,6 +81,14 @@ Include a reference to the cookbook in a [Cheffile][cheffile] and run
     gem install librarian
     cd chef-repo
     librarian-chef init
+
+To use the Opscode platform version:
+
+    echo "cookbook 'user'" >> Cheffile
+    librarian-chef install
+
+Or to reference the Git version:
+
     cat >> Cheffile <<END_OF_CHEFFILE
     cookbook 'user',
       :git => 'git://github.com/fnichol/chef-user.git', :ref => 'v0.2.10'
