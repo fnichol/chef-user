@@ -1,5 +1,9 @@
 ## 0.2.13 (unreleased)
 
+### Improvements
+
+* Pull request [#11](https://github.com/fnichol/chef-user/pull/11), Issue [#10](https://github.com/fnichol/chef-user/issues/10): Groups management (not only gid). ([@smaftoul][])
+
 
 ## 0.2.12 (May 1, 2012)
 
@@ -71,3 +75,4 @@ The initial release.
 [@fnichol]: https://github.com/fnichol
 [@nathenharvey]: https://github.com/nathenharvey
 [@nessche]: https://github.com/nessche
+[@smaftoul]: https://github.com/smaftoul
