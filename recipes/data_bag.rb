@@ -31,7 +31,7 @@ Array(node['users']).each do |i|
     end
     action u['action'].to_sym if u['action']
   end
-  
+
   unless u['groups'].nil?
     u['groups'].each do |groupname|
       group groupname do
