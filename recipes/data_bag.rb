@@ -17,7 +17,7 @@
 # limitations under the License.
 #
 
-bag   = node['user']['data_bag']
+bag = node['user']['data_bag_name']
 
 # Fetch the user array from the node's attribute hash. If a subhash is
 # desired (ex. node['base']['user_accounts']), then set:

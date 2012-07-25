@@ -1,5 +1,9 @@
 ## 0.2.17 (unreleased)
 
+### Improvements
+
+* Rename data_bag attribute to data_bag_name which works with bag_config cookbook. ([@fnichol][])
+
 
 ## 0.2.15 (July 24, 2012)
 

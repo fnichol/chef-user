@@ -183,7 +183,7 @@ resource can override this value. There are 2 valid states:
 
 The default is `true`.
 
-### <a name="attributes-data-bag"></a> data_bag
+### <a name="attributes-data-bag-name"></a> data_bag_name
 
 The data bag name containing a group of user account information. This is used
 by the `data_bag` recipe to use as a database of user accounts.
