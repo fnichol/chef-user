@@ -1,4 +1,7 @@
-## 0.2.17 (unreleased)
+## 0.3.1 (unreleased)
+
+
+## 0.3.0 (July 24, 2012)
 
 ### Improvements
 
