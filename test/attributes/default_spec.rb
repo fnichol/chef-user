@@ -92,8 +92,8 @@ describe 'User::Attributes::Default' do
       @node[attr_ns]['ssh_keygen'].must_equal "true"
     end
 
-    it "sets default data bag" do
-      @node[attr_ns]['data_bag'].must_equal "users"
+    it "sets default data bag name" do
+      @node[attr_ns]['data_bag_name'].must_equal "users"
     end
   end
 end
