@@ -1,5 +1,9 @@
 ## 0.2.15 (unreleased)
 
+### Improvements
+
+* Add :user_array_node_attr attribute which can override the location of the users' array in your node's attribute hash. ([@fnichol][])
+
 
 ## 0.2.14 (July 24, 2012)
 

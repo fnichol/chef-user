@@ -19,8 +19,17 @@
 
 bag   = node['user']['data_bag']
 
-# only manage the subset of users defined in node['users']
-Array(node['users']).each do |i|
+# Fetch the user array from the node's attribute hash. If a subhash is
+# desired (ex. node['base']['user_accounts']), then set:
+#
+#     node['user']['user_array_node_attr'] = "base/user_accounts"
+user_array = node
+node['user']['user_array_node_attr'].split("/").each do |hash_key|
+  user_array = user_array.send(:[], hash_key)
+end
+
+# only manage the subset of users defined
+Array(user_array).each do |i|
   u = data_bag_item(bag, i.gsub(/[.]/, '-'))
   username = u['username'] || u['id']
 

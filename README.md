@@ -31,8 +31,8 @@ or a user to be removed:
     }
 
 The data bag recipe will iterate through a list of usernames defined in
-`node['users']` and attempt to pull in the user's information from the data
-bag item. In other words, having:
+`node['users']` (by default) and attempt to pull in the user's information
+from the data bag item. In other words, having:
 
     node['users'] = ['hsolo']
 
@@ -186,8 +186,18 @@ The default is `true`.
 ### <a name="attributes-data-bag"></a> data_bag
 
 The data bag name containing a group of user account information. This is used
-by the `data_bag` recipe to use as a database of user accounts. The default is
-`"users"`.
+by the `data_bag` recipe to use as a database of user accounts.
+
+The default is `"users"`.
+
+### <a name="attributes-user-array-node-attr"></a> user_array_node_attr
+
+The node attributes containing an array of users to be managed. If a nested
+hash in the node's attributes is required, then use a `/` between subhashes.
+For example, if the users' array is stored in `node['system']['accounts']`),
+then set `node['user']['user_array_node_attr']` to `"system/accounts"`.
+
+The default is `"users"`.
 
 ## <a name="lwrps"></a> Resources and Providers
 
