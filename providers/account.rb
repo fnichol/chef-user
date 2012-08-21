@@ -134,7 +134,8 @@ def authorized_keys_resource(exec_action)
     group       Etc.getpwnam(new_resource.username).gid
     mode        '0600'
     variables   :user     => new_resource.username,
-                :ssh_keys => ssh_keys
+                :ssh_keys => ssh_keys,
+                :fqdn     => node['fqdn']
     action      :nothing
   end
   r.run_action(exec_action)
