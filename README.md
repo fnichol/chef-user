@@ -131,7 +131,7 @@ Server or Opscode Hosted Chef, then a tarball installation might fit the bill:
 
 This recipe is a no-op and does nothing.
 
-### <a name="recipes-data-bag"></a> default
+### <a name="recipes-data-bag"></a> data_bag
 
 Processes a list of users with data drawn from a data bag. The default data bag
 is `users` and the list of user account to create on this node is set on
