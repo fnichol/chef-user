@@ -8,7 +8,7 @@ describe 'User::Attributes::Default' do
   before do
     @node = Chef::Node.new
     @node.consume_external_attrs(ohai_data, {})
-    @node.from_file(File.join(File.dirname(__FILE__), %w{.. .. attributes default.rb}))
+    @node.from_file(File.join(File.dirname(__FILE__), %w{.. .. .. attributes default.rb}))
   end
 
   let(:ohai_data) do
