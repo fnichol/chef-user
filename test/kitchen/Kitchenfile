@@ -1,0 +1,4 @@
+cookbook "user" do
+  runtimes []
+  lint false
+end
