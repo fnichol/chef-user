@@ -30,6 +30,7 @@ attribute :shell,         :kind_of => String
 attribute :password,      :kind_of => String
 attribute :system_user,   :default => false
 attribute :manage_home,   :default => nil
+attribute :non_unique,    :default => nil
 attribute :create_group,  :default => nil
 attribute :ssh_keys,      :kind_of => [Array,String], :default => []
 attribute :ssh_keygen,    :default => nil

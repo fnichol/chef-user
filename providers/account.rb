@@ -24,6 +24,7 @@ def load_current_resource
     "#{node['user']['home_root']}/#{new_resource.username}"
   @my_shell = new_resource.shell || node['user']['default_shell']
   @manage_home = bool(new_resource.manage_home, node['user']['manage_home'])
+  @non_unique = bool(new_resource.non_unique, node['user']['non_unique'])
   @create_group = bool(new_resource.create_group, node['user']['create_group'])
   @ssh_keygen = bool(new_resource.ssh_keygen, node['user']['ssh_keygen'])
 end
@@ -89,7 +90,7 @@ end
 
 def user_resource(exec_action)
   # avoid variable scoping issues in resource block
-  my_home, my_shell, manage_home = @my_home, @my_shell, @manage_home
+  my_home, my_shell, manage_home, non_unique = @my_home, @my_shell, @manage_home, @non_unique
 
   r = user new_resource.username do
     comment   new_resource.comment  if new_resource.comment
@@ -99,7 +100,7 @@ def user_resource(exec_action)
     shell     my_shell              if my_shell
     password  new_resource.password if new_resource.password
     system    new_resource.system_user
-    supports  :manage_home => manage_home
+    supports  :manage_home => manage_home, :non_unique => non_unique
     action    :nothing
   end
   r.run_action(exec_action)
