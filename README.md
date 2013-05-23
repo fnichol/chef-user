@@ -7,8 +7,9 @@
 A convenient Chef LWRP to manage user accounts and SSH keys. This is **not**
 the Opscode *users* cookbook.
 
-* Github: https://github.com/fnichol/chef-user
+* Website: http://fnichol.github.io/chef-user/
 * Opscode Community Site: http://community.opscode.com/cookbooks/user
+* Source Code: https://github.com/fnichol/chef-user
 
 ## <a name="usage"></a> Usage
 
