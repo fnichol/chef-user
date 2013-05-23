@@ -41,7 +41,7 @@ Array(user_array).each do |i|
     action u['action'].to_sym if u['action']
   end
 
-  unless u['groups'].nil?
+  unless u['groups'].nil? || u['action'] == 'remove'
     u['groups'].each do |groupname|
       group groupname do
         members username
