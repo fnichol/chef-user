@@ -20,6 +20,7 @@ data bag called `"users"` with an item like the following:
       "id"        : "hsolo",
       "comment"   : "Han Solo",
       "home"      : "/opt/hoth/hsolo",
+      "groups"    : ["admin", "www-data"]
       "ssh_keys"  : ["123...", "456..."]
     }
 
