@@ -1,0 +1,7 @@
+{
+  "id"        : "hsolo",
+  "comment"   : "Han Solo",
+  "home"      : "/opt/hoth/hsolo",
+  "groups"    : ["admin", "www-data"],
+  "ssh_keys"  : ["123...", "456..."]
+}

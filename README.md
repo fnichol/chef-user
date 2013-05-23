@@ -23,7 +23,7 @@ data bag called `"users"` with an item like the following:
       "id"        : "hsolo",
       "comment"   : "Han Solo",
       "home"      : "/opt/hoth/hsolo",
-      "groups"    : ["admin", "www-data"]
+      "groups"    : ["admin", "www-data"],
       "ssh_keys"  : ["123...", "456..."]
     }
 
@@ -34,11 +34,19 @@ or a user to be removed:
       "action"  : "remove"
     }
 
+If you have a username containing a period, use a dash in the data bag item
+and set a `username` attribute:
+
+    {
+      "id"        : "luke-skywalker",
+      "username"  : "luke.skywalker"
+    }
+
 The data bag recipe will iterate through a list of usernames defined in
 `node['users']` (by default) and attempt to pull in the user's information
 from the data bag item. In other words, having:
 
-    node['users'] = ['hsolo']
+    node['users'] = ['hsolo', 'lando', 'luke.skywalker']
 
 will set up the `hsolo` user information and not use the `lando` user
 information.

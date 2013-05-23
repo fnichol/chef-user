@@ -26,3 +26,15 @@ suites:
   run_list:
   - recipe[user_test::lwrp]
   attributes: {}
+- name: data_bag
+  run_list:
+  - recipe[user::data_bag]
+  attributes:
+    users:
+    - hsolo
+    - lando
+    - luke.skywalker
+- name: data_bag_no_users
+  run_list:
+  - recipe[user::data_bag]
+  attributes: {}
