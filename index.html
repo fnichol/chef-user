@@ -58,7 +58,7 @@ data bag called <code>"users"</code> with an item like the following:</p>
   "id"        : "hsolo",
   "comment"   : "Han Solo",
   "home"      : "/opt/hoth/hsolo",
-  "groups"    : ["admin", "www-data"]
+  "groups"    : ["admin", "www-data"],
   "ssh_keys"  : ["123...", "456..."]
 }
 </code></pre>
@@ -71,11 +71,21 @@ data bag called <code>"users"</code> with an item like the following:</p>
 }
 </code></pre>
 
+<p>If you have a username containing a period, use a dash in the data bag item
+and set a <code>username</code> attribute:</p>
+
+<pre><code>{
+  "id"        : "luke-skywalker",
+  "username"  : "luke.skywalker",
+  "action"    : ["create", "lock"]
+}
+</code></pre>
+
 <p>The data bag recipe will iterate through a list of usernames defined in
 <code>node['users']</code> (by default) and attempt to pull in the user's information
 from the data bag item. In other words, having:</p>
 
-<pre><code>node['users'] = ['hsolo']
+<pre><code>node['users'] = ['hsolo', 'lando', 'luke.skywalker']
 </code></pre>
 
 <p>will set up the <code>hsolo</code> user information and not use the <code>lando</code> user
@@ -218,6 +228,13 @@ which varies by platform. Generally speaking, the default value is
 <code>"/bin/bash"</code>.</p>
 
 <h3>
+<a name="attributes-home-dir-mode"></a> home_dir_mode</h3>
+
+<p>The default Unix permissions applied to a user's home directory.</p>
+
+<p>The default is <code>"2755"</code>.</p>
+
+<h3>
 <a name="attributes-manage-home"></a> manage_home</h3>
 
 <p>Whether of not to manage the home directory of a user by default. Each resource
@@ -229,6 +246,19 @@ can override this value. The are 2 valid states:</p>
 <li>
 <code>"false"</code>, <code>false</code>, or <code>"no"</code>: will not manage the user's home directory.</li>
 </ul><p>The default is <code>true</code>.</p>
+
+<h3>
+<a name="attributes-non-unique"></a> non_unique</h3>
+
+<p>Whether of not to allow the creation of a user account with a duplicate UID.
+Each resource can override this value. The are 2 valid states:</p>
+
+<ul>
+<li>
+<code>"true"</code>, <code>true</code>, or <code>"yes"</code>: will allow duplicate UIDs.</li>
+<li>
+<code>"false"</code>, <code>false</code>, or <code>"no"</code>: will not allow duplicate UIDs.</li>
+</ul><p>The default is <code>false</code>.</p>
 
 <h3>
 <a name="attributes-create-user-group"></a> create_group</h3>
@@ -384,6 +414,11 @@ this by installing the "libshadow-ruby1.8" package.</p>
       <td><code>true</code></td>
     </tr>
 <tr>
+<td>non_unique</td>
+      <td>Whether or not to allow the creation of a user account with a duplicate UID.</td>
+      <td><code>false</code></td>
+    </tr>
+<tr>
 <td>create_group</td>
       <td>
         Whether or not to to create a group with the same name as the user.
@@ -415,10 +450,10 @@ this by installing the "libshadow-ruby1.8" package.</p>
 end
 </code></pre>
 
-<h5>Locking a User Account</h5>
+<h5>Creating and Locking a User Account</h5>
 
 <pre><code>user_account 'lando' do
-  action  :lock
+  action  [:create, :lock]
 end
 </code></pre>
 
