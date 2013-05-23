@@ -91,6 +91,13 @@ def user_resource(exec_action)
   # avoid variable scoping issues in resource block
   my_home, my_shell, manage_home = @my_home, @my_shell, @manage_home
 
+  r = directory ::File.dirname(my_home) do
+    recursive true
+    action    :nothing
+  end
+  r.run_action(:create) unless exec_action == :delete
+  new_resource.updated_by_last_action(true) if r.updated_by_last_action?
+
   r = user new_resource.username do
     comment   new_resource.comment  if new_resource.comment
     uid       new_resource.uid      if new_resource.uid
