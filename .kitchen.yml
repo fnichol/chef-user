@@ -38,3 +38,9 @@ suites:
   run_list:
   - recipe[user::data_bag]
   attributes: {}
+- name: home_dir_mode
+  run_list:
+  - recipe[user_test::lwrp]
+  attributes:
+    user:
+      home_dir_mode: "0700"
