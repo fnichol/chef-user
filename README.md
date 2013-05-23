@@ -167,6 +167,12 @@ The default user shell given to a user. Each resource can override this value
 which varies by platform. Generally speaking, the default value is
 `"/bin/bash"`.
 
+### <a name="attributes-home-dir-mode"></a> home_dir_mode
+
+The default Unix permissions applied to a user's home directory.
+
+The default is `"2755"`.
+
 ### <a name="attributes-manage-home"></a> manage_home
 
 Whether of not to manage the home directory of a user by default. Each resource
