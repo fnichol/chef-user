@@ -1,19 +1,478 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
   <head>
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-    <script src="js/libs/documentup.js"></script>
-    <script>
-      DocumentUp.document({
-        repo:         "fnichol/chef-user",
-        twitter:      "fnichol",
-        afterRender:  function() {
-          $('#sections a').html(function(index, heading) {
-            return heading.replace(/^&lt;.*\/a&gt; /, '');
-          });
-        }
-      });
-    </script>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>User Chef Cookbook by fnichol</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <script src="javascripts/scale.fix.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
   </head>
-  <body></body>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1 class="header">User Chef Cookbook</h1>
+        <p class="header">A convenient Chef LWRP to manage user accounts and SSH keys</p>
+
+        <ul>
+          <li class="download"><a class="buttons" href="https://github.com/fnichol/chef-user/zipball/master">Download ZIP</a></li>
+          <li class="download"><a class="buttons" href="https://github.com/fnichol/chef-user/tarball/master">Download TAR</a></li>
+          <li><a class="buttons github" href="https://github.com/fnichol/chef-user">View On GitHub</a></li>
+        </ul>
+
+        <p class="header">This project is maintained by <a class="header name" href="https://github.com/fnichol">fnichol</a></p>
+
+
+      </header>
+      <section>
+        <p><a href="http://travis-ci.org/fnichol/chef-user"><img src="https://secure.travis-ci.org/fnichol/chef-user.png?branch=master" alt="Build Status"></a></p>
+
+<h2>
+<a name="description"></a> Description</h2>
+
+<p>A convenient Chef LWRP to manage user accounts and SSH keys. This is <strong>not</strong>
+the Opscode <em>users</em> cookbook.</p>
+
+<ul>
+<li>Github: <a href="https://github.com/fnichol/chef-user">https://github.com/fnichol/chef-user</a>
+</li>
+<li>Opscode Community Site: <a href="http://community.opscode.com/cookbooks/user">http://community.opscode.com/cookbooks/user</a>
+</li>
+</ul><h2>
+<a name="usage"></a> Usage</h2>
+
+<p>Simply include <code>recipe[user]</code> in your run_list and the <code>user_account</code>
+resource will be available.</p>
+
+<p>To use <code>recipe[user::data_bag]</code>, include it in your run_list and have a
+data bag called <code>"users"</code> with an item like the following:</p>
+
+<pre><code>{
+  "id"        : "hsolo",
+  "comment"   : "Han Solo",
+  "home"      : "/opt/hoth/hsolo",
+  "groups"    : ["admin", "www-data"]
+  "ssh_keys"  : ["123...", "456..."]
+}
+</code></pre>
+
+<p>or a user to be removed:</p>
+
+<pre><code>{
+  "id"      : "lando",
+  "action"  : "remove"
+}
+</code></pre>
+
+<p>The data bag recipe will iterate through a list of usernames defined in
+<code>node['users']</code> (by default) and attempt to pull in the user's information
+from the data bag item. In other words, having:</p>
+
+<pre><code>node['users'] = ['hsolo']
+</code></pre>
+
+<p>will set up the <code>hsolo</code> user information and not use the <code>lando</code> user
+information.</p>
+
+<h2>
+<a name="requirements"></a> Requirements</h2>
+
+<h3>
+<a name="requirements-chef"></a> Chef</h3>
+
+<p>Tested on 0.10.8 but newer and older version should work just fine. File an
+<a href="https://github.com/fnichol/chef-user/issues">issue</a> if this isn't the case.</p>
+
+<h3>
+<a name="requirements-platform"></a> Platform</h3>
+
+<p>The following platforms have been tested with this cookbook, meaning that the
+recipes run on these platforms without error:</p>
+
+<ul>
+<li>ubuntu</li>
+<li>debian</li>
+<li>mac_os_x</li>
+</ul><h3>
+<a name="requirements-cookbooks"></a> Cookbooks</h3>
+
+<p>There are <strong>no</strong> external cookbook dependencies.</p>
+
+<h2>
+<a name="installation"></a> Installation</h2>
+
+<p>Depending on the situation and use case there are several ways to install
+this cookbook. All the methods listed below assume a tagged version release
+is the target, but omit the tags to get the head of development. A valid
+Chef repository structure like the <a href="https://github.com/opscode/chef-repo">Opscode repo</a> is also assumed.</p>
+
+<h3>
+<a name="installation-platform"></a> From the Community Site</h3>
+
+<p>To install this cookbook from the Community Site, use the <em>knife</em> command:</p>
+
+<pre><code>knife cookbook site install user
+</code></pre>
+
+<h3>
+<a name="installation-berkshelf"></a> Using Berkshelf</h3>
+
+<p><a href="http://berkshelf.com/">Berkshelf</a> is a cookbook dependency manager and development
+workflow assistant. To install Berkshelf:</p>
+
+<pre><code>cd chef-repo
+gem install berkshelf
+berks init
+</code></pre>
+
+<p>To use the Community Site version:</p>
+
+<pre><code>echo "cookbook 'user'" &gt;&gt; Berksfile
+berks install
+</code></pre>
+
+<p>Or to reference the Git version:</p>
+
+<pre><code>repo="fnichol/chef-user"
+latest_release=$(curl -s https://api.github.com/repos/$repo/git/refs/tags \
+| ruby -rjson -e '
+  j = JSON.parse(STDIN.read);
+  puts j.map { |t| t["ref"].split("/").last }.sort.last
+')
+cat &gt;&gt; Berksfile &lt;&lt;END_OF_BERKSFILE
+cookbook 'user',
+  :git =&gt; 'git://github.com/$repo.git', :branch =&gt; '$latest_release'
+END_OF_BERKSFILE
+berks install
+</code></pre>
+
+<h3>
+<a name="installation-librarian"></a> Using Librarian-Chef</h3>
+
+<p><a href="https://github.com/applicationsonline/librarian#readme">Librarian-Chef</a> is a bundler for your Chef cookbooks.
+To install Librarian-Chef:</p>
+
+<pre><code>cd chef-repo
+gem install librarian
+librarian-chef init
+</code></pre>
+
+<p>To use the Opscode platform version:</p>
+
+<pre><code>echo "cookbook 'user'" &gt;&gt; Cheffile
+librarian-chef install
+</code></pre>
+
+<p>Or to reference the Git version:</p>
+
+<pre><code>repo="fnichol/chef-user"
+latest_release=$(curl -s https://api.github.com/repos/$repo/git/refs/tags \
+| ruby -rjson -e '
+  j = JSON.parse(STDIN.read);
+  puts j.map { |t| t["ref"].split("/").last }.sort.last
+')
+cat &gt;&gt; Cheffile &lt;&lt;END_OF_CHEFFILE
+cookbook 'user',
+  :git =&gt; 'git://github.com/$repo.git', :ref =&gt; '$latest_release'
+END_OF_CHEFFILE
+librarian-chef install
+</code></pre>
+
+<h2>
+<a name="recipes"></a> Recipes</h2>
+
+<h3>
+<a name="recipes-default"></a> default</h3>
+
+<p>This recipe is a no-op and does nothing.</p>
+
+<h3>
+<a name="recipes-data-bag"></a> data_bag</h3>
+
+<p>Processes a list of users with data drawn from a data bag. The default data bag
+is <code>users</code> and the list of user account to create on this node is set on
+<code>node['users']</code>.</p>
+
+<h2>
+<a name="attributes"></a> Attributes</h2>
+
+<h3>
+<a name="attributes-home-root"></a> home_root</h3>
+
+<p>The default parent path of a user's home directory. Each resource can override
+this value which varies by platform. Generally speaking, the default value is
+<code>"/home"</code>.</p>
+
+<h3>
+<a name="attributes-default-shell"></a> default_shell</h3>
+
+<p>The default user shell given to a user. Each resource can override this value
+which varies by platform. Generally speaking, the default value is
+<code>"/bin/bash"</code>.</p>
+
+<h3>
+<a name="attributes-manage-home"></a> manage_home</h3>
+
+<p>Whether of not to manage the home directory of a user by default. Each resource
+can override this value. The are 2 valid states:</p>
+
+<ul>
+<li>
+<code>"true"</code>, <code>true</code>, or <code>"yes"</code>: will manage the user's home directory.</li>
+<li>
+<code>"false"</code>, <code>false</code>, or <code>"no"</code>: will not manage the user's home directory.</li>
+</ul><p>The default is <code>true</code>.</p>
+
+<h3>
+<a name="attributes-create-user-group"></a> create_group</h3>
+
+<p>Whether or not to to create a group with the same name as the user by default.
+Each resource can override this value. The are 2 valid states:</p>
+
+<ul>
+<li>
+<code>"true"</code>, <code>true</code>, or <code>"yes"</code>: will create a group for the user by default.</li>
+<li>
+<code>"false"</code>, <code>false</code>, or <code>"no"</code>: will not create a group for the user by default.</li>
+</ul><p>The default is <code>true</code>.</p>
+
+<h3>
+<a name="attributes-ssh-keygen"></a> ssh_keygen</h3>
+
+<p>Whether or not to generate an SSH keypair for the user by default. Each
+resource can override this value. There are 2 valid states:</p>
+
+<ul>
+<li>
+<code>"true"</code>, <code>true</code>, or <code>"yes"</code>: will generate an SSH keypair when the account
+is created.</li>
+<li>
+<code>"false"</code>, <code>false</code>, or <code>"no"</code>: will not generate an SSH keypair when the account
+is created.</li>
+</ul><p>The default is <code>true</code>.</p>
+
+<h3>
+<a name="attributes-data-bag-name"></a> data_bag_name</h3>
+
+<p>The data bag name containing a group of user account information. This is used
+by the <code>data_bag</code> recipe to use as a database of user accounts.</p>
+
+<p>The default is <code>"users"</code>.</p>
+
+<h3>
+<a name="attributes-user-array-node-attr"></a> user_array_node_attr</h3>
+
+<p>The node attributes containing an array of users to be managed. If a nested
+hash in the node's attributes is required, then use a <code>/</code> between subhashes.
+For example, if the users' array is stored in <code>node['system']['accounts']</code>),
+then set <code>node['user']['user_array_node_attr']</code> to <code>"system/accounts"</code>.</p>
+
+<p>The default is <code>"users"</code>.</p>
+
+<h2>
+<a name="lwrps"></a> Resources and Providers</h2>
+
+<h3>
+<a name="lwrps-ua"></a> user_account</h3>
+
+<p><strong>Note:</strong> in order to use the <code>password</code> attribute, you must have the
+<a href="https://rubygems.org/gems/ruby-shadow">ruby-shadow gem</a> installed. On Debian/Ubuntu you can get
+this by installing the "libshadow-ruby1.8" package.</p>
+
+<h3>
+<a name="lwrps-ua-actions"></a> Actions</h3>
+
+<table>
+<tr>
+<th>Action</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+<tr>
+<td>create</td>
+      <td>
+        Create the user, its home directory, <code>.ssh/authorized_keys</code>,
+        and <code>.ssh/{id_dsa,id_dsa.pub}</code>.
+      </td>
+      <td>Yes</td>
+    </tr>
+<tr>
+<td>remove</td>
+      <td>Remove the user account.</td>
+      <td> </td>
+    </tr>
+<tr>
+<td>modify</td>
+      <td>Modiy the user account.</td>
+      <td> </td>
+    </tr>
+<tr>
+<td>manage</td>
+      <td>Manage the user account.</td>
+      <td> </td>
+    </tr>
+<tr>
+<td>lock</td>
+      <td>Lock the user's password.</td>
+      <td> </td>
+    </tr>
+<tr>
+<td>unlock</td>
+      <td>Unlock the user's password.</td>
+      <td> </td>
+    </tr>
+</table><h3>
+<a name="lwrps-ua-attributes"></a> Attributes</h3>
+
+<table>
+<tr>
+<th>Attribute</th>
+      <th>Description</th>
+      <th>Default Value</th>
+    </tr>
+<tr>
+<td>username</td>
+      <td>
+<b>Name attribute:</b> The name of the user.</td>
+      <td><code>nil</code></td>
+    </tr>
+<tr>
+<td>comment</td>
+      <td>Gecos/Comment field.</td>
+      <td><code>nil</code></td>
+    </tr>
+<tr>
+<td>uid</td>
+      <td>The numeric user id.</td>
+      <td><code>nil</code></td>
+    </tr>
+<tr>
+<td>gid</td>
+      <td>The primary group id.</td>
+      <td><code>nil</code></td>
+    </tr>
+<tr>
+<td>home</td>
+      <td>Home directory location.</td>
+      <td><code>"#{node['user']['home_root']}/#{username}</code></td>
+    </tr>
+<tr>
+<td>shell</td>
+      <td>The login shell.</td>
+      <td><code>node['user']['default_shell']</code></td>
+    </tr>
+<tr>
+<td>password</td>
+      <td>Shadow hash of password.</td>
+      <td><code>nil</code></td>
+    </tr>
+<tr>
+<td>system_user</td>
+      <td>Whether or not to create a system user.</td>
+      <td><code>false</code></td>
+    </tr>
+<tr>
+<td>manage_home</td>
+      <td>Whether or not to manage the home directory.</td>
+      <td><code>true</code></td>
+    </tr>
+<tr>
+<td>create_group</td>
+      <td>
+        Whether or not to to create a group with the same name as the user.
+      </td>
+      <td><code>node['user']['create_group']</code></td>
+    </tr>
+<tr>
+<td>ssh_keys</td>
+      <td>
+        A <b>String</b> or <b>Array</b> of SSH public keys to populate the
+        user's <code>.ssh/authorized_keys</code> file.
+      </td>
+      <td><code>[]</code></td>
+    </tr>
+<tr>
+<td>ssh_keygen</td>
+      <td>Whether or not to generate an SSH keypair for the user.</td>
+      <td><code>node['user']['ssh_keygen']</code></td>
+    </tr>
+</table><h4>
+<a name="lwrps-ua-examples"></a> Examples</h4>
+
+<h5>Creating a User Account</h5>
+
+<pre><code>user_account 'hsolo' do
+  comment   'Han Solo'
+  ssh_keys  ['3dc348d9af8027df7b9c...', '2154d3734d609eb5c452...']
+  home      '/opt/hoth/hsolo'
+end
+</code></pre>
+
+<h5>Locking a User Account</h5>
+
+<pre><code>user_account 'lando' do
+  action  :lock
+end
+</code></pre>
+
+<h5>Removing a User account</h5>
+
+<pre><code>user_account 'obiwan' do
+  action  :remove
+end
+</code></pre>
+
+<h2>
+<a name="development"></a> Development</h2>
+
+<ul>
+<li>Source hosted at <a href="https://github.com/fnichol/chef-user">GitHub</a>
+</li>
+<li>Report issues/Questions/Feature requests on <a href="https://github.com/fnichol/chef-user/issues">GitHub Issues</a>
+</li>
+</ul><p>Pull requests are very welcome! Make sure your patches are well tested.
+Ideally create a topic branch for every separate change you make.</p>
+
+<h2>
+<a name="license"></a> License and Author</h2>
+
+<p>Author:: [Fletcher Nichol]<a href="fnichol@nichol.ca">fnichol</a> <a href="http://coderwall.com/fnichol"><img src="http://api.coderwall.com/fnichol/endorsecount.png" alt="endorse"></a></p>
+
+<p>Copyright 2011, Fletcher Nichol</p>
+
+<p>Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at</p>
+
+<pre><code>http://www.apache.org/licenses/LICENSE-2.0
+</code></pre>
+
+<p>Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.</p>
+      </section>
+      <footer>
+        <p><small>Hosted on <a href="https://pages.github.com">GitHub Pages</a> using the Dinky theme</small></p>
+      </footer>
+    </div>
+    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+		          <script type="text/javascript">
+            var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+            document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+          </script>
+          <script type="text/javascript">
+            try {
+              var pageTracker = _gat._getTracker("UA-29670723-1");
+            pageTracker._trackPageview();
+            } catch(err) {}
+          </script>
+
+  </body>
 </html>
