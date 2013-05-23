@@ -1,4 +1,6 @@
-# <a name="title"></a> chef-user [![Build Status](https://secure.travis-ci.org/fnichol/chef-user.png?branch=master)](http://travis-ci.org/fnichol/chef-user)
+# <a name="title"></a> User Chef Cookbook
+
+[![Build Status](https://secure.travis-ci.org/fnichol/chef-user.png?branch=master)](http://travis-ci.org/fnichol/chef-user)
 
 ## <a name="description"></a> Description
 
@@ -67,20 +69,47 @@ this cookbook. All the methods listed below assume a tagged version release
 is the target, but omit the tags to get the head of development. A valid
 Chef repository structure like the [Opscode repo][chef_repo] is also assumed.
 
-### <a name="installation-platform"></a> From the Opscode Community Platform
+### <a name="installation-platform"></a> From the Community Site
 
-To install this cookbook from the Opscode platform, use the *knife* command:
+To install this cookbook from the Community Site, use the *knife* command:
 
     knife cookbook site install user
+
+### <a name="installation-berkshelf"></a> Using Berkshelf
+
+[Berkshelf][berkshelf] is a cookbook dependency manager and development
+workflow assistant. To install Berkshelf:
+
+    cd chef-repo
+    gem install berkshelf
+    berks init
+
+To use the Community Site version:
+
+    echo "cookbook 'user'" >> Berksfile
+    berks install
+
+Or to reference the Git version:
+
+    repo="fnichol/chef-user"
+    latest_release=$(curl -s https://api.github.com/repos/$repo/git/refs/tags \
+    | ruby -rjson -e '
+      j = JSON.parse(STDIN.read);
+      puts j.map { |t| t["ref"].split("/").last }.sort.last
+    ')
+    cat >> Berksfile <<END_OF_BERKSFILE
+    cookbook 'user',
+      :git => 'git://github.com/$repo.git', :branch => '$latest_release'
+    END_OF_BERKSFILE
+    berks install
 
 ### <a name="installation-librarian"></a> Using Librarian-Chef
 
 [Librarian-Chef][librarian] is a bundler for your Chef cookbooks.
-Include a reference to the cookbook in a [Cheffile][cheffile] and run
-`librarian-chef install`. To install Librarian-Chef:
+To install Librarian-Chef:
 
-    gem install librarian
     cd chef-repo
+    gem install librarian
     librarian-chef init
 
 To use the Opscode platform version:
@@ -90,41 +119,17 @@ To use the Opscode platform version:
 
 Or to reference the Git version:
 
+    repo="fnichol/chef-user"
+    latest_release=$(curl -s https://api.github.com/repos/$repo/git/refs/tags \
+    | ruby -rjson -e '
+      j = JSON.parse(STDIN.read);
+      puts j.map { |t| t["ref"].split("/").last }.sort.last
+    ')
     cat >> Cheffile <<END_OF_CHEFFILE
     cookbook 'user',
-      :git => 'git://github.com/fnichol/chef-user.git', :ref => 'v0.3.0'
+      :git => 'git://github.com/$repo.git', :ref => '$latest_release'
     END_OF_CHEFFILE
     librarian-chef install
-
-### <a name="installation-kgc"></a> Using knife-github-cookbooks
-
-The [knife-github-cookbooks][kgc] gem is a plugin for *knife* that supports
-installing cookbooks directly from a GitHub repository. To install with the
-plugin:
-
-    gem install knife-github-cookbooks
-    cd chef-repo
-    knife cookbook github install fnichol/chef-user/v0.3.0
-
-### <a name="installation-gitsubmodule"></a> As a Git Submodule
-
-A common practice (which is getting dated) is to add cookbooks as Git
-submodules. This is accomplishes like so:
-
-    cd chef-repo
-    git submodule add git://github.com/fnichol/chef-user.git cookbooks/user
-    git submodule init && git submodule update
-
-**Note:** the head of development will be linked here, not a tagged release.
-
-### <a name="installation-tarball"></a> As a Tarball
-
-If the cookbook needs to downloaded temporarily just to be uploaded to a Chef
-Server or Opscode Hosted Chef, then a tarball installation might fit the bill:
-
-    cd chef-repo/cookbooks
-    curl -Ls https://github.com/fnichol/chef-user/tarball/v0.3.0 | tar xfz - && \
-      mv fnichol-chef-user-* user
 
 ## <a name="recipes"></a> Recipes
 
@@ -382,6 +387,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 
+[berkshelf]:      http://berkshelf.com/
 [chef_repo]:    https://github.com/opscode/chef-repo
 [cheffile]:     https://github.com/applicationsonline/librarian/blob/master/lib/librarian/chef/templates/Cheffile
 [kgc]:          https://github.com/websterclay/knife-github-cookbooks#readme
