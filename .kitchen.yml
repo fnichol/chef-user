@@ -22,6 +22,7 @@ platforms:
     box_url: https://opscode-vm.s3.amazonaws.com/vagrant/opscode_centos-5.9_provisionerless.box
 
 suites:
-- name: default
-  run_list: ["recipe[user]"]
+- name: lwrp
+  run_list:
+  - recipe[user_test::lwrp]
   attributes: {}

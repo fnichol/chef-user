@@ -350,10 +350,10 @@ this by installing the "libshadow-ruby1.8" package.
       home      '/opt/hoth/hsolo'
     end
 
-##### Locking a User Account
+##### Creating and Locking a User Account
 
     user_account 'lando' do
-      action  :lock
+      action  [:create, :lock]
     end
 
 ##### Removing a User account
