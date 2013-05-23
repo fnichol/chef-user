@@ -9,3 +9,7 @@ end
 user_account 'lando' do
   action  [:create, :lock]
 end
+
+user_account 'obiwan' do
+  action  :remove
+end
