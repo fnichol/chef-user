@@ -1,9 +1,15 @@
 require 'chef/resource'
-require 'chef/resource'
+require 'chef/resource/lwrp_base'
 
 module ResourceMixins
   def load_resource(cookbook, lrwp)
-    Chef::Resource.build_from_file(cookbook.to_s, File.expand_path(File.join(
+    klass = if Chef::Resource.respond_to?(:build_from_file)
+      Chef::Resource
+    elsif Chef::Resource::LWRPBase.respond_to?(:build_from_file)
+      Chef::Resource::LWRPBase
+    end
+
+    klass.build_from_file(cookbook.to_s, File.expand_path(File.join(
       File.dirname(__FILE__), %w{.. resources}, "#{lwrp.to_s}.rb")), nil)
   end
 

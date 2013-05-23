@@ -1,6 +1,8 @@
 require 'minitest/autorun'
+require 'chef/resource'
 require 'chef/node'
 require 'chef/platform'
+require 'chef/dsl'
 
 describe 'User::Attributes::Default' do
   let(:attr_ns) { 'user' }
