@@ -162,7 +162,7 @@ can override this value. The are 2 valid states:
 
 The default is `true`.
 
-### <a name="attributes-create-user-group"></a> create_user_group
+### <a name="attributes-create-user-group"></a> create_group
 
 Whether or not to to create a group with the same name as the user by default.
 Each resource can override this value. The are 2 valid states:
