@@ -39,7 +39,8 @@ and set a `username` attribute:
 
     {
       "id"        : "luke-skywalker",
-      "username"  : "luke.skywalker"
+      "username"  : "luke.skywalker",
+      "action"    : ["create", "lock"]
     }
 
 The data bag recipe will iterate through a list of usernames defined in

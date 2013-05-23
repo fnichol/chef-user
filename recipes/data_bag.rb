@@ -38,7 +38,7 @@ Array(user_array).each do |i|
         ssh_keys ssh_keygen}.each do |attr|
       send(attr, u[attr]) if u[attr]
     end
-    action u['action'].to_sym if u['action']
+    action Array(u['action']).map { |a| a.to_sym } if u['action']
   end
 
   unless u['groups'].nil? || u['action'] == 'remove'

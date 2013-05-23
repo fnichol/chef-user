@@ -1,4 +1,5 @@
 {
   "id"        : "luke-skywalker",
   "username"  : "luke.skywalker",
+  "action"    : ["create", "lock"]
 }
