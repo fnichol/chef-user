@@ -13,3 +13,13 @@ end
 user_account 'obiwan' do
   action  :remove
 end
+
+user_account 'darth.vader' do
+  uid         4042
+  non_unique  true
+end
+
+user_account 'askywalker' do
+  uid         4042
+  non_unique  true
+end
