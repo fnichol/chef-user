@@ -35,7 +35,7 @@ Array(user_array).each do |i|
 
   user_account username do
     %w{comment uid gid home shell password system_user manage_home create_group
-        ssh_keys ssh_keygen}.each do |attr|
+        ssh_keys ssh_keygen non_unique}.each do |attr|
       send(attr, u[attr]) if u[attr]
     end
     action Array(u['action']).map { |a| a.to_sym } if u['action']

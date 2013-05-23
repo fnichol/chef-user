@@ -42,7 +42,7 @@ describe 'Chef::Resource::UserAccount' do
     @it.system_user.must_equal false
   end
 
-  %w{manage_home create_group ssh_keygen}.each do |attr|
+  %w{manage_home create_group ssh_keygen non_unique}.each do |attr|
     it "takes a truthy value for #{attr} attr" do
       @it.send(attr, true)
       @it.send(attr).must_equal true

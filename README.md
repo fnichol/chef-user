@@ -183,6 +183,16 @@ can override this value. The are 2 valid states:
 
 The default is `true`.
 
+### <a name="attributes-non-unique"></a> non_unique
+
+Whether of not to allow the creation of a user account with a duplicate UID.
+Each resource can override this value. The are 2 valid states:
+
+* `"true"`, `true`, or `"yes"`: will allow duplicate UIDs.
+* `"false"`, `false`, or `"no"`: will not allow duplicate UIDs.
+
+The default is `false`.
+
 ### <a name="attributes-create-user-group"></a> create_group
 
 Whether or not to to create a group with the same name as the user by default.
@@ -331,6 +341,11 @@ this by installing the "libshadow-ruby1.8" package.
       <td>manage_home</td>
       <td>Whether or not to manage the home directory.</td>
       <td><code>true</code></td>
+    </tr>
+    <tr>
+      <td>non_unique</td>
+      <td>Whether or not to allow the creation of a user account with a duplicate UID.</td>
+      <td><code>false</code></td>
     </tr>
     <tr>
       <td>create_group</td>
