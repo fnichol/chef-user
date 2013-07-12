@@ -150,7 +150,7 @@ This recipe is a no-op and does nothing.
 ### <a name="recipes-data-bag"></a> data_bag
 
 Processes a list of users with data drawn from a data bag. The default data bag
-is `users` and the list of user account to create on this node is set on
+is `users` and the list of user accounts to create on this node is set on
 `node['users']`.
 
 ## <a name="attributes"></a> Attributes
