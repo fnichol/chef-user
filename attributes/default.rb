@@ -29,6 +29,9 @@ when 'openbsd'
 when 'mac_os_x', 'mac_os_x_server'
   default['user']['home_root']      = "/Users"
   default['user']['default_shell']  = "/bin/bash"
+when 'omnios'
+  default['user']['home_root']      = "/export/home"
+  default['user']['default_shell']  = "/bin/bash"
 else
   default['user']['home_root']      = "/home"
   default['user']['default_shell']  = nil
