@@ -28,6 +28,8 @@ node['user']['user_array_node_attr'].split("/").each do |hash_key|
   user_array = user_array.send(:[], hash_key)
 end
 
+groups = {}
+
 # only manage the subset of users defined
 Array(user_array).each do |i|
   u = data_bag_item(bag, i.gsub(/[.]/, '-'))
@@ -43,10 +45,15 @@ Array(user_array).each do |i|
 
   unless u['groups'].nil? || u['action'] == 'remove'
     u['groups'].each do |groupname|
-      group groupname do
-        members username
-        append true
-      end
+      groups[groupname] = [] unless groups[groupname]
+      groups[groupname] += [username]
     end
+  end
+end
+
+groups.each do |groupname, users|
+  group groupname do
+    members users
+    append true
   end
 end
