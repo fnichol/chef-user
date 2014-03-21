@@ -18,6 +18,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+require "chef/resource"
 
 def load_current_resource
   @my_home = new_resource.home ||
@@ -90,8 +91,10 @@ end
 def user_resource(exec_action)
   # avoid variable scoping issues in resource block
   my_home, my_shell, manage_home, non_unique = @my_home, @my_shell, @manage_home, @non_unique
+  my_dir = ::File.dirname(my_home)
 
-  r = directory ::File.dirname(my_home) do
+  r = directory "#{my_home} parent directory" do
+    path my_dir
     recursive true
     action    :nothing
   end
@@ -119,6 +122,7 @@ end
 def dir_resource(exec_action)
   ["#{@my_home}/.ssh", @my_home].each do |dir|
     r = directory dir do
+      path        dir
       owner       new_resource.username
       group       Etc.getpwnam(new_resource.username).gid
       mode        dir =~ %r{/\.ssh$} ? '0700' : node['user']['home_dir_mode']
