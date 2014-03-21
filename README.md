@@ -13,8 +13,16 @@ the Opscode *users* cookbook.
 
 ## <a name="usage"></a> Usage
 
-Simply include `recipe[user]` in your run\_list and the `user_account`
-resource will be available.
+Simply include this cookbook as a dependency in `metadata.rb` and the `user_account`
+resource will be available. Example:
+
+    # In your_cookbook/metadata.rb
+    depends 'user'
+    
+    # In your_cookbook/recipes/default.rb
+    user_account 'hsolo' do
+        ssh_keygen true
+    end
 
 To use `recipe[user::data_bag]`, include it in your run\_list and have a
 data bag called `"users"` with an item like the following:
