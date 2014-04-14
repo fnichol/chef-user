@@ -148,6 +148,7 @@ def authorized_keys_resource(exec_action)
                 :ssh_keys => ssh_keys,
                 :fqdn     => node['fqdn']
     action      :nothing
+    not_if      ssh_keys.empty?
   end
   r.run_action(exec_action)
   new_resource.updated_by_last_action(true) if r.updated_by_last_action?
