@@ -32,7 +32,7 @@ end
 
 action :create do
   user_resource             :create
-  dir_resource              :create
+  home_dir_resource              :create
   authorized_keys_resource  :create
   keygen_resource           :create
 end
@@ -45,28 +45,28 @@ end
 
 action :modify do
   user_resource             :modify
-  dir_resource              :create
+  home_dir_resource              :create
   authorized_keys_resource  :create
   keygen_resource           :create
 end
 
 action :manage do
   user_resource             :manage
-  dir_resource              :create
+  home_dir_resource              :create
   authorized_keys_resource  :create
   keygen_resource           :create
 end
 
 action :lock do
   user_resource             :lock
-  dir_resource              :create
+  home_dir_resource              :create
   authorized_keys_resource  :create
   keygen_resource           :create
 end
 
 action :unlock do
   user_resource             :unlock
-  dir_resource              :create
+  home_dir_resource              :create
   authorized_keys_resource  :create
   keygen_resource           :create
 end
@@ -119,39 +119,58 @@ def user_resource(exec_action)
   Etc.endgrent
 end
 
-def dir_resource(exec_action)
-  ["#{@my_home}/.ssh", @my_home].each do |dir|
-    r = directory dir do
-      path        dir
-      owner       new_resource.username
-      group       Etc.getpwnam(new_resource.username).gid
-      mode        dir =~ %r{/\.ssh$} ? '0700' : node['user']['home_dir_mode']
-      recursive   true
-      action      :nothing
-    end
-    r.run_action(exec_action)
-    new_resource.updated_by_last_action(true) if r.updated_by_last_action?
+def home_dir_resource(exec_action)
+  # avoid variable scoping issues in resource block
+  my_home = @my_home
+  r = directory my_home do
+    path        my_home
+    owner       new_resource.username
+    group       Etc.getpwnam(new_resource.username).gid
+    mode        node['user']['home_dir_mode']
+    recursive   true
+    action      :nothing
   end
+  r.run_action(exec_action)
+  new_resource.updated_by_last_action(true) if r.updated_by_last_action?
 end
+
+def home_ssh_dir_resource(exec_action)
+  # avoid variable scoping issues in resource block
+  my_home = @my_home
+  r = directory "#{my_home}/.ssh" do
+    path        "#{my_home}/.ssh"
+    owner       new_resource.username
+    group       Etc.getpwnam(new_resource.username).gid
+    mode        '0700'
+    recursive   true
+    action      :nothing
+  end
+  r.run_action(exec_action)
+  new_resource.updated_by_last_action(true) if r.updated_by_last_action?
+end
+
 
 def authorized_keys_resource(exec_action)
   # avoid variable scoping issues in resource block
   ssh_keys = Array(new_resource.ssh_keys)
+  unless ssh_keys.empty?
+    home_ssh_dir_resource(exec_action)
 
-  r = template "#{@my_home}/.ssh/authorized_keys" do
-    cookbook    'user'
-    source      'authorized_keys.erb'
-    owner       new_resource.username
-    group       Etc.getpwnam(new_resource.username).gid
-    mode        '0600'
-    variables   :user     => new_resource.username,
-                :ssh_keys => ssh_keys,
-                :fqdn     => node['fqdn']
-    action      :nothing
-    not_if      ssh_keys.empty?
+    r = template "#{@my_home}/.ssh/authorized_keys" do
+      cookbook    'user'
+      source      'authorized_keys.erb'
+      owner       new_resource.username
+      group       Etc.getpwnam(new_resource.username).gid
+      mode        '0600'
+      variables   :user     => new_resource.username,
+        :ssh_keys => ssh_keys,
+        :fqdn     => node['fqdn']
+      action      :nothing
+    end
+
+    r.run_action(exec_action)
+    new_resource.updated_by_last_action(true) if r.updated_by_last_action?
   end
-  r.run_action(exec_action)
-  new_resource.updated_by_last_action(true) if r.updated_by_last_action?
 end
 
 def keygen_resource(exec_action)
@@ -171,6 +190,7 @@ def keygen_resource(exec_action)
 
     creates   "#{my_home}/.ssh/id_dsa"
   end
+  home_ssh_dir_resource(exec_action)
   e.run_action(:run) if @ssh_keygen && exec_action == :create
   new_resource.updated_by_last_action(true) if e.updated_by_last_action?
 
