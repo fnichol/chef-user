@@ -32,7 +32,7 @@ end
 
 action :create do
   user_resource             :create
-  home_dir_resource              :create
+  home_dir_resource         :create
   authorized_keys_resource  :create
   keygen_resource           :create
 end
@@ -45,28 +45,28 @@ end
 
 action :modify do
   user_resource             :modify
-  home_dir_resource              :create
+  home_dir_resource         :create
   authorized_keys_resource  :create
   keygen_resource           :create
 end
 
 action :manage do
   user_resource             :manage
-  home_dir_resource              :create
+  home_dir_resource         :create
   authorized_keys_resource  :create
   keygen_resource           :create
 end
 
 action :lock do
   user_resource             :lock
-  home_dir_resource              :create
+  home_dir_resource         :create
   authorized_keys_resource  :create
   keygen_resource           :create
 end
 
 action :unlock do
   user_resource             :unlock
-  home_dir_resource              :create
+  home_dir_resource         :create
   authorized_keys_resource  :create
   keygen_resource           :create
 end
