@@ -20,6 +20,12 @@
 #
 require "chef/resource"
 
+use_inline_resources
+
+def why_run_supported?
+  true
+end
+
 def load_current_resource
   @my_home = new_resource.home ||
     "#{node['user']['home_root']}/#{new_resource.username}"
@@ -35,14 +41,12 @@ action :create do
   home_dir_resource         :create
   authorized_keys_resource  :create
   keygen_resource           :create
-  new_resource.updated_by_last_action(true)
 end
 
 action :remove do
   # Removing a user will also remove all the other file based resources.
   # By only removing the user it will make this action idempotent.
   user_resource             :remove
-  new_resource.updated_by_last_action(true)
 end
 
 action :modify do
@@ -50,7 +54,6 @@ action :modify do
   home_dir_resource         :create
   authorized_keys_resource  :create
   keygen_resource           :create
-  new_resource.updated_by_last_action(true)
 end
 
 action :manage do
@@ -58,7 +61,6 @@ action :manage do
   home_dir_resource         :create
   authorized_keys_resource  :create
   keygen_resource           :create
-  new_resource.updated_by_last_action(true)
 end
 
 action :lock do
@@ -66,7 +68,6 @@ action :lock do
   home_dir_resource         :create
   authorized_keys_resource  :create
   keygen_resource           :create
-  new_resource.updated_by_last_action(true)
 end
 
 action :unlock do
@@ -74,7 +75,6 @@ action :unlock do
   home_dir_resource         :create
   authorized_keys_resource  :create
   keygen_resource           :create
-  new_resource.updated_by_last_action(true)
 end
 
 private
