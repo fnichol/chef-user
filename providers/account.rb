@@ -161,20 +161,20 @@ def keygen_resource(exec_action)
     cwd       my_home
     user      new_resource.username
     command   <<-KEYGEN.gsub(/^ +/, '')
-      ssh-keygen -t dsa -f #{my_home}/.ssh/id_dsa -N '' \
+      ssh-keygen -t rsa -f #{my_home}/.ssh/id_rsa -N '' \
         -C '#{new_resource.username}@#{fqdn}-#{Time.now.strftime('%FT%T%z')}'
-      chmod 0600 #{my_home}/.ssh/id_dsa
-      chmod 0644 #{my_home}/.ssh/id_dsa.pub
+      chmod 0600 #{my_home}/.ssh/id_rsa
+      chmod 0644 #{my_home}/.ssh/id_rsa.pub
     KEYGEN
     action    :nothing
 
-    creates   "#{my_home}/.ssh/id_dsa"
+    creates   "#{my_home}/.ssh/id_rsa"
   end
   e.run_action(:run) if @ssh_keygen && exec_action == :create
   new_resource.updated_by_last_action(true) if e.updated_by_last_action?
 
   if exec_action == :delete then
-    ["#{@my_home}/.ssh/id_dsa", "#{@my_home}/.ssh/id_dsa.pub"].each do |keyfile|
+    ["#{@my_home}/.ssh/id_rsa", "#{@my_home}/.ssh/id_rsa.pub"].each do |keyfile|
       r = file keyfile do
         backup  false
         action :delete
