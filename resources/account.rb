@@ -36,6 +36,7 @@ attribute :ssh_keys,      :kind_of => [Array,String], :default => []
 attribute :groups,        :kind_of => [Array,String], :default => []
 attribute :ssh_keygen,    :default => nil
 attribute :ssh_keypair,   :kind_of => Hash, :default => {}
+attribute :data_bag,      :kind_of => String, :default => 'ssh_public_keys'
 
 def initialize(*args)
   super
