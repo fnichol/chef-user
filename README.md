@@ -375,6 +375,11 @@ this by installing the "libshadow-ruby1.8" package.
       <td>Whether or not to generate an SSH keypair for the user.</td>
       <td><code>node['user']['ssh_keygen']</code></td>
     </tr>
+    <tr>
+      <td>groups</td>
+      <td>An Array of groups to which to add the user.</td>
+      <td><code>[]</code></td>
+    </tr>
   </tbody>
 </table>
 
