@@ -1,5 +1,10 @@
 if defined?(ChefSpec)
-  ChefSpec::Runner.define_runner_method :user_account
+  if Gem::Version.new(ChefSpec::VERSION) >= Gem::Version.new('4.0.0')
+    ChefSpec.define_matcher :user_account
+  else
+    ChefSpec::Runner.define_runner_method :user_account
+  end
+
   def create_user_account(user)
     ChefSpec::Matchers::ResourceMatcher.new(:user_account, :create, user)
   end
