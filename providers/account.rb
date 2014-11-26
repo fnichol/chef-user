@@ -30,41 +30,41 @@ def load_current_resource
   @ssh_keygen = bool(new_resource.ssh_keygen, node['user']['ssh_keygen'])
 end
 
-action :create do
+action :create do # ~FC017: LWRP does not notify when updated
   user_resource             :create
   dir_resource              :create
   authorized_keys_resource  :create
   keygen_resource           :create
 end
 
-action :remove do
+action :remove do # ~FC017: LWRP does not notify when updated
   # Removing a user will also remove all the other file based resources.
   # By only removing the user it will make this action idempotent.
   user_resource             :remove
 end
 
-action :modify do
+action :modify do # ~FC017: LWRP does not notify when updated
   user_resource             :modify
   dir_resource              :create
   authorized_keys_resource  :create
   keygen_resource           :create
 end
 
-action :manage do
+action :manage do # ~FC017: LWRP does not notify when updated
   user_resource             :manage
   dir_resource              :create
   authorized_keys_resource  :create
   keygen_resource           :create
 end
 
-action :lock do
+action :lock do # ~FC017: LWRP does not notify when updated
   user_resource             :lock
   dir_resource              :create
   authorized_keys_resource  :create
   keygen_resource           :create
 end
 
-action :unlock do
+action :unlock do # ~FC017: LWRP does not notify when updated
   user_resource             :unlock
   dir_resource              :create
   authorized_keys_resource  :create
@@ -108,7 +108,7 @@ def user_resource(exec_action)
     home      my_home               if my_home
     shell     my_shell              if my_shell
     password  new_resource.password if new_resource.password
-    system    new_resource.system_user
+    system    new_resource.system_user # ~FC048: Prefer Mixlib::ShellOut
     supports  :manage_home => manage_home, :non_unique => non_unique
     action    :nothing
   end
