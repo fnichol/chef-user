@@ -273,7 +273,7 @@ this by installing the "libshadow-ruby1.8" package.
     </tr>
     <tr>
       <td>modify</td>
-      <td>Modiy the user account.</td>
+      <td>Modify the user account.</td>
       <td>&nbsp;</td>
     </tr>
     <tr>
