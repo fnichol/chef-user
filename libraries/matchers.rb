@@ -1,6 +1,5 @@
 if defined?(ChefSpec)
-  chefspec_version = Gem.loaded_specs['chefspec'].version
-  if chefspec_version < Gem::Version.new('4.1.0')
+  if ChefSpec::VERSION < Gem::Version.new('4.1.0')
     ChefSpec::Runner.define_runner_method :user_account
   else
     ChefSpec.define_matcher :user_account
