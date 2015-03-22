@@ -23,3 +23,25 @@ user_account 'askywalker' do
   uid         4042
   non_unique  true
 end
+
+# set up an existing user with an existing key.
+
+test_user = 'leia'
+test_user_home = "/home/#{test_user}"
+
+user test_user do
+  supports :manage_home => true
+  home test_user_home
+end
+
+directory "#{test_user_home}/.ssh" do
+  mode '0700'
+  owner test_user
+  group test_user
+end
+
+file "#{test_user_home}/.ssh/id_dsa" do
+  content 'bogus'
+end
+
+user_account 'leia'

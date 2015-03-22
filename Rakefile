@@ -8,7 +8,7 @@ Rake::TestTask.new do |t|
 end
 
 FoodCritic::Rake::LintTask.new do |t|
-  t.options = { :fail_tags => ['any'] }
+  t.options = { :tags => ['~FC048'], :fail_tags => ['any'] }
 end
 
 begin

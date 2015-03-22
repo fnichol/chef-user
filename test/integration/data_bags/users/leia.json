@@ -1,0 +1,13 @@
+{
+  "groups": [
+    "leia"
+  ],
+  "nagios": {
+    "email": "leia@somedumbstar.com"
+  
+  },
+  "castle": "git://somedumbstar.com/leia/castles.git",
+  "uid": "88464",
+  "id": "leia",
+  "shell": "/usr/bin/zsh"
+}

@@ -18,7 +18,7 @@ resource will be available. Example:
 
     # In your_cookbook/metadata.rb
     depends 'user'
-    
+
     # In your_cookbook/recipes/default.rb
     user_account 'hsolo' do
         ssh_keygen true
@@ -158,7 +158,7 @@ This recipe is a no-op and does nothing.
 ### <a name="recipes-data-bag"></a> data_bag
 
 Processes a list of users with data drawn from a data bag. The default data bag
-is `users` and the list of user account to create on this node is set on
+is `users` and the list of user accounts to create on this node is set on
 `node['users']`.
 
 ## <a name="attributes"></a> Attributes
@@ -262,7 +262,7 @@ this by installing the "libshadow-ruby1.8" package.
       <td>create</td>
       <td>
         Create the user, its home directory, <code>.ssh/authorized_keys</code>,
-        and <code>.ssh/{id_dsa,id_dsa.pub}</code>.
+        and <code>.ssh/{id_rsa,id_rsa.pub}</code>.
       </td>
       <td>Yes</td>
     </tr>
@@ -273,7 +273,7 @@ this by installing the "libshadow-ruby1.8" package.
     </tr>
     <tr>
       <td>modify</td>
-      <td>Modiy the user account.</td>
+      <td>Modify the user account.</td>
       <td>&nbsp;</td>
     </tr>
     <tr>
@@ -326,6 +326,11 @@ this by installing the "libshadow-ruby1.8" package.
       <td><code>nil</code></td>
     </tr>
     <tr>
+      <td>groups</td>
+      <td>Array of other groups this user should be a member of.</td>
+      <td><code>nil</code></td>
+    </tr>
+    <tr>
       <td>home</td>
       <td>Home directory location.</td>
       <td><code>"#{node['user']['home_root']}/#{username}</code></td>
@@ -374,6 +379,11 @@ this by installing the "libshadow-ruby1.8" package.
       <td>ssh_keygen</td>
       <td>Whether or not to generate an SSH keypair for the user.</td>
       <td><code>node['user']['ssh_keygen']</code></td>
+    </tr>
+    <tr>
+      <td>groups</td>
+      <td>An Array of groups to which to add the user.</td>
+      <td><code>[]</code></td>
     </tr>
   </tbody>
 </table>
