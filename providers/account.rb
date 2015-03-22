@@ -22,7 +22,7 @@ require "chef/resource"
 
 use_inline_resources
 
-def why_run_supported?
+def whyrun_supported?
   true
 end
 
