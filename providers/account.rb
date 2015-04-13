@@ -94,6 +94,14 @@ def normalize_bool(val)
   end
 end
 
+def user_gid
+  # this check is needed as the new user won't exit yet
+  # in why_run mode, causing an uncaught ArgumentError exception
+  Etc.getpwnam(new_resource.username).gid
+rescue ArgumentError
+  nil
+end
+
 def user_resource(exec_action)
   # avoid variable scoping issues in resource block
   my_home, my_shell, manage_home, non_unique = @my_home, @my_shell, @manage_home, @non_unique
@@ -131,7 +139,7 @@ def home_dir_resource(exec_action)
   r = directory my_home do
     path        my_home
     owner       new_resource.username
-    group       Etc.getpwnam(new_resource.username).gid
+    group       user_gid
     mode        node['user']['home_dir_mode']
     recursive   true
     action      :nothing
@@ -146,7 +154,7 @@ def home_ssh_dir_resource(exec_action)
   r = directory "#{my_home}/.ssh" do
     path        "#{my_home}/.ssh"
     owner       new_resource.username
-    group       Etc.getpwnam(new_resource.username).gid
+    group       user_gid
     mode        '0700'
     recursive   true
     action      :nothing
@@ -166,7 +174,7 @@ def authorized_keys_resource(exec_action)
       cookbook    'user'
       source      'authorized_keys.erb'
       owner       new_resource.username
-      group       Etc.getpwnam(new_resource.username).gid
+      group       user_gid
       mode        '0600'
       variables   :user     => new_resource.username,
         :ssh_keys => ssh_keys,
