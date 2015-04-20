@@ -99,15 +99,13 @@ def user_resource(exec_action)
   my_home, my_shell, manage_home, non_unique = @my_home, @my_shell, @manage_home, @non_unique
   my_dir = ::File.dirname(my_home)
 
-  r = directory "#{my_home} parent directory" do
+  directory "#{my_home} parent directory" do
     path my_dir
     recursive true
-    action    :nothing
+    action( exec_action == :remove ? :nothing : :create)
   end
-  r.run_action(:create) unless exec_action == :delete
-  new_resource.updated_by_last_action(true) if r.updated_by_last_action?
 
-  r = user new_resource.username do
+  user new_resource.username do
     comment   new_resource.comment  if new_resource.comment
     uid       new_resource.uid      if new_resource.uid
     gid       new_resource.gid      if new_resource.gid
@@ -116,45 +114,34 @@ def user_resource(exec_action)
     password  new_resource.password if new_resource.password
     system    new_resource.system_user # ~FC048: Prefer Mixlib::ShellOut
     supports  :manage_home => manage_home, :non_unique => non_unique
-    action    :nothing
+    action    exec_action
   end
-  r.run_action(exec_action)
-  new_resource.updated_by_last_action(true) if r.updated_by_last_action?
-
-  # fixes CHEF-1699
-  Etc.endgrent
 end
 
 def home_dir_resource(exec_action)
   # avoid variable scoping issues in resource block
   my_home = @my_home
-  r = directory my_home do
+  directory my_home do
     path        my_home
     owner       new_resource.username
     group       Etc.getpwnam(new_resource.username).gid
     mode        node['user']['home_dir_mode']
     recursive   true
-    action      :nothing
+    action      exec_action
   end
-  r.run_action(exec_action)
-  new_resource.updated_by_last_action(true) if r.updated_by_last_action?
 end
 
 def home_ssh_dir_resource(exec_action)
-  # avoid variable scoping issues in resource block
   my_home = @my_home
-  r = directory "#{my_home}/.ssh" do
+  directory "#{my_home}/.ssh" do
     path        "#{my_home}/.ssh"
     owner       new_resource.username
     group       Etc.getpwnam(new_resource.username).gid
     mode        '0700'
     recursive   true
-    action      :nothing
+    action      exec_action
   end
-  r.run_action(exec_action)
-  new_resource.updated_by_last_action(true) if r.updated_by_last_action?
 end
-
 
 def authorized_keys_resource(exec_action)
   # avoid variable scoping issues in resource block
@@ -162,7 +149,7 @@ def authorized_keys_resource(exec_action)
   unless ssh_keys.empty?
     home_ssh_dir_resource(exec_action)
 
-    r = template "#{@my_home}/.ssh/authorized_keys" do
+    template "#{@my_home}/.ssh/authorized_keys" do
       cookbook    'user'
       source      'authorized_keys.erb'
       owner       new_resource.username
@@ -171,19 +158,21 @@ def authorized_keys_resource(exec_action)
       variables   :user     => new_resource.username,
         :ssh_keys => ssh_keys,
         :fqdn     => node['fqdn']
-      action      :nothing
+      action      exec_action
     end
-
-    r.run_action(exec_action)
-    new_resource.updated_by_last_action(true) if r.updated_by_last_action?
   end
 end
 
 def keygen_resource(exec_action)
   # avoid variable scoping issues in resource block
   fqdn, my_home = node['fqdn'], @my_home
-
-  e = execute "create ssh keypair for #{new_resource.username}" do
+  if @ssh_keygen && exec_action == :create
+    execute_action = :run
+  else
+    execute_action = :nothing
+  end
+  home_ssh_dir_resource(exec_action)
+  execute "create ssh keypair for #{new_resource.username}" do
     cwd       my_home
     user      new_resource.username
     command   <<-KEYGEN.gsub(/^ +/, '')
@@ -192,21 +181,16 @@ def keygen_resource(exec_action)
       chmod 0600 #{my_home}/.ssh/id_rsa
       chmod 0644 #{my_home}/.ssh/id_rsa.pub
     KEYGEN
-    action    :nothing
-
     creates   "#{my_home}/.ssh/id_rsa"
+    action execute_action
   end
-  home_ssh_dir_resource(exec_action)
-  e.run_action(:run) if @ssh_keygen && exec_action == :create
-  new_resource.updated_by_last_action(true) if e.updated_by_last_action?
 
-  if exec_action == :delete then
+  if exec_action == :delete
     ["#{@my_home}/.ssh/id_rsa", "#{@my_home}/.ssh/id_rsa.pub"].each do |keyfile|
-      r = file keyfile do
+      file keyfile do
         backup  false
         action :delete
       end
-      new_resource.updated_by_last_action(true) if r.updated_by_last_action?
     end
   end
 end
