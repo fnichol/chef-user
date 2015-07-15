@@ -213,8 +213,8 @@ def keygen_resource(exec_action)
 end
 
 def group_resource(exec_action)
-  new_resource.groups.each do |group|
-      r = group "#{group}"  do
+  new_resource.groups.each do |grp|
+      r = group grp  do
         action :nothing
         members new_resource.username
       end
