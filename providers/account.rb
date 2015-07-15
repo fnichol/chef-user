@@ -34,6 +34,7 @@ def load_current_resource
   @non_unique = bool(new_resource.non_unique, node['user']['non_unique'])
   @create_group = bool(new_resource.create_group, node['user']['create_group'])
   @ssh_keygen = bool(new_resource.ssh_keygen, node['user']['ssh_keygen'])
+  @group_add = bool(new_resource.groups, node['user']['groups'])
 end
 
 action :create do # ~FC017: LWRP does not notify when updated
@@ -41,6 +42,7 @@ action :create do # ~FC017: LWRP does not notify when updated
   home_dir_resource         :create
   authorized_keys_resource  :create
   keygen_resource           :create
+  group_resource            :create
 end
 
 action :remove do # ~FC017: LWRP does not notify when updated
@@ -155,7 +157,6 @@ def home_ssh_dir_resource(exec_action)
   new_resource.updated_by_last_action(true) if r.updated_by_last_action?
 end
 
-
 def authorized_keys_resource(exec_action)
   # avoid variable scoping issues in resource block
   ssh_keys = Array(new_resource.ssh_keys)
@@ -208,5 +209,16 @@ def keygen_resource(exec_action)
       end
       new_resource.updated_by_last_action(true) if r.updated_by_last_action?
     end
+  end
+end
+
+def group_resource(exec_action)
+  new_resource.groups.each do |group|
+      r = group "#{group}"  do
+        action :nothing
+        members new_resource.username
+      end
+      r.run_action(:create) unless exec_action == :delete
+      new_resource.updated_by_last_action(true) if r.updated_by_last_action?
   end
 end
