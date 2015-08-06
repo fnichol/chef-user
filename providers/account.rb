@@ -218,7 +218,7 @@ def group_resource(exec_action)
         action :nothing
         members new_resource.username
       end
-      r.run_action(:create) unless exec_action == :delete
+      r.run_action(:modify) unless exec_action == :delete
       new_resource.updated_by_last_action(true) if r.updated_by_last_action?
   end
 end
