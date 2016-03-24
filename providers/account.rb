@@ -43,6 +43,7 @@ action :create do # ~FC017: LWRP does not notify when updated
   authorized_keys_resource  :create
   keygen_resource           :create
   group_resource            :create
+  keypair_resource          :create
 end
 
 action :remove do # ~FC017: LWRP does not notify when updated
@@ -56,6 +57,7 @@ action :modify do # ~FC017: LWRP does not notify when updated
   home_dir_resource         :create
   authorized_keys_resource  :create
   keygen_resource           :create
+  keypair_resource          :create
 end
 
 action :manage do # ~FC017: LWRP does not notify when updated
@@ -63,6 +65,7 @@ action :manage do # ~FC017: LWRP does not notify when updated
   home_dir_resource         :create
   authorized_keys_resource  :create
   keygen_resource           :create
+  keypair_resource          :create
 end
 
 action :lock do # ~FC017: LWRP does not notify when updated
@@ -70,6 +73,7 @@ action :lock do # ~FC017: LWRP does not notify when updated
   home_dir_resource         :create
   authorized_keys_resource  :create
   keygen_resource           :create
+  keypair_resource          :create
 end
 
 action :unlock do # ~FC017: LWRP does not notify when updated
@@ -77,6 +81,7 @@ action :unlock do # ~FC017: LWRP does not notify when updated
   home_dir_resource         :create
   authorized_keys_resource  :create
   keygen_resource           :create
+  keypair_resource          :create
 end
 
 private
@@ -233,5 +238,25 @@ def group_resource(exec_action)
           end
       r.run_action(:create) unless exec_action == :delete
       new_resource.updated_by_last_action(true) if r.updated_by_last_action?
+  end
+end
+
+def keypair_resource(exec_action)
+  new_resource.ssh_keypair.each do |name, key|
+    # avoid variable scoping issues in resource block
+    key_name, key_content = name, key
+
+    home = Etc.getpwnam(new_resource.username).dir
+    r = file "#{home}/.ssh/#{name}" do
+      content   key_content + "\n"
+      owner     new_resource.username
+      group     Etc.getpwnam(new_resource.username).gid
+      mode      '0600' unless key_name =~ /.pub$/
+      sensitive true
+      action    :nothing
+    end
+
+    r.run_action(exec_action)
+    new_resource.updated_by_last_action(true) if r.updated_by_last_action?
   end
 end
