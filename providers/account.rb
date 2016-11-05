@@ -91,7 +91,7 @@ end
 
 def normalize_bool(val)
   case val
-  when 'no','false',false then false
+  when nil, 'no', 'false', false then false
   else true
   end
 end
