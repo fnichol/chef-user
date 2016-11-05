@@ -114,7 +114,7 @@ def user_resource(exec_action)
     recursive true
     action    :nothing
   end
-  r.run_action(:create) unless exec_action == :delete
+  r.run_action(:create) unless exec_action == :remove
   new_resource.updated_by_last_action(true) if r.updated_by_last_action?
 
   r = user new_resource.username do
