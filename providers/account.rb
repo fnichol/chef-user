@@ -209,7 +209,7 @@ def authorized_keys_resource(exec_action)
       if user['keys']
         ssh_keys += Array(user['keys'])
       else
-        Chef::Log.info("Couldn't get ssh public keys from data bag '#{new_resource.ssh_pubkey_data_bag}' for user '#{item}'")
+        Chef::Log.warn("Couldn't get ssh public keys from data bag '#{new_resource.ssh_pubkey_data_bag}' for user '#{item}'")
       end
     end
   end
