@@ -205,11 +205,11 @@ def authorized_keys_resource(exec_action)
     # if key is not a valid ssh public key, assume it's a username
     # and try getting the ssh keys from the data bag
     else
-      user = data_bag_item(new_resource.data_bag, item)
+      user = data_bag_item(new_resource.ssh_pubkey_data_bag, item)
       if user['keys']
         ssh_keys += Array(user['keys'])
       else
-        Chef::Log.info("Couldn't get ssh public keys from data bag '#{new_resource.data_bag}' for user '#{item}'")
+        Chef::Log.info("Couldn't get ssh public keys from data bag '#{new_resource.ssh_pubkey_data_bag}' for user '#{item}'")
       end
     end
   end

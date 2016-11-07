@@ -373,7 +373,7 @@ this by installing the "libshadow-ruby1.8" package.
         A <b>String</b> or <b>Array</b> of SSH public keys to populate the
         user's <code>.ssh/authorized_keys</code> file.
         If the provided String is not a vaild ssh public-key, it will try to retrieve
-        the public-key from the data_bag specified in <code>data_bag</code> (see below)
+        the public-key from the data_bag specified in <code>ssh_pubkey_data_bag</code> (see below)
       </td>
       <td><code>[]</code></td>
     </tr>
@@ -388,7 +388,7 @@ this by installing the "libshadow-ruby1.8" package.
       <td><code>[]</code></td>
     </tr>
     <tr>
-      <td>data_bag</td>
+      <td>ssh_pubkey_data_bag</td>
       <td>
         A <b>String</b> providing the name of the data_bag holding the public keys.
         Expected format of the data_bag:
