@@ -247,7 +247,7 @@ def keypair_resource(exec_action)
     key_name, key_content = name, key
 
     home = Etc.getpwnam(new_resource.username).dir
-    r = file "#{home}/.ssh/#{name}" do
+    r = file ::File.join(home, '.ssh', name) do
       content   key_content + "\n"
       owner     new_resource.username
       group     Etc.getpwnam(new_resource.username).gid
