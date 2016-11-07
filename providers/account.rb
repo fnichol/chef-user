@@ -198,8 +198,11 @@ def authorized_keys_resource(exec_action)
   # avoid variable scoping issues in resource block
   ssh_keys = []
   Array(new_resource.ssh_keys).each do |item|
-    # if item is a valid ssh key, copy it.
-    if item =~ /^(ssh-(dss|rsa|ed25519)|ecdsa-sha2-\w+) AAAA/
+    # Check whether the data bag item is a comment or a valid ssh public key label.
+    #
+    # Note: This regex is kept pretty tolerant to allow notations like this:
+    #       `environment="SSH_USER=user" ssh-rsa AAAA...`
+    if item =~ /(^\s*#|ssh-(dss|rsa|ed25519)|ecdsa-sha2-\w+ AAAA)/
       ssh_keys << item
 
     # if key is not a valid ssh public key, assume it's a username
