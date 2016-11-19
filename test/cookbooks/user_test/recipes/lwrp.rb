@@ -30,7 +30,7 @@ test_user = 'leia'
 test_user_home = "/home/#{test_user}"
 
 user test_user do
-  supports :manage_home => true
+  manage_home true
   home test_user_home
 end
 

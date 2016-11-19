@@ -125,7 +125,8 @@ def user_resource(exec_action)
     shell     my_shell              if my_shell
     password  new_resource.password if new_resource.password
     system    new_resource.system_user # ~FC048: Prefer Mixlib::ShellOut
-    supports  :manage_home => manage_home, :non_unique => non_unique
+    non_unique non_unique
+    manage_home true
     action    :nothing
   end
   r.run_action(exec_action)
