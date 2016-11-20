@@ -29,11 +29,11 @@ platforms:
       box: opscode_centos-6.8
       box_url: https://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_centos-6.8_chef-provisionerless.box
   - name: centos-5.x # XXX(theckman): EOL 2017/03/31
-    # XXX(theckman): for some reason CentOS 5.11 doesn't work in VirtualBox on my system.
-    # The VirtualBox instance enters Guru Meditation mode :(
+    # XXX(theckman): CentOS 5.11 in a VirtualBox instance enters Guru Meditation mode :(
+    # Known Issue: https://github.com/chef/bento/blob/master/CHANGELOG.md#230-2016-09-30
     driver:
-      box: opscode_centos-5.9
-      box_url: https://opscode-vm.s3.amazonaws.com/vagrant/opscode_centos-5.9_provisionerless.box
+      box: opscode_centos-5.10
+      box_url: https://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_centos-5.10_chef-provisionerless.box
 
 suites:
 - name: lwrp
