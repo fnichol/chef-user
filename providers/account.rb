@@ -97,7 +97,7 @@ def normalize_bool(val)
 end
 
 def user_gid
-  # this check is needed as the new user won't exit yet
+  # this check is needed as the new user won't exist yet,
   # in why_run mode, causing an uncaught ArgumentError exception
   Etc.getpwnam(new_resource.username).gid
 rescue ArgumentError
