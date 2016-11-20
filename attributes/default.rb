@@ -19,7 +19,7 @@
 # limitations under the License.
 #
 
-case platform
+case node['platform']
 when 'debian','ubuntu','redhat','centos','amazon','scientific','fedora','freebsd','suse'
   default['user']['home_root']      = "/home"
   default['user']['default_shell']  = "/bin/bash"
