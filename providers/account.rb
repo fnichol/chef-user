@@ -109,6 +109,15 @@ rescue ArgumentError
   nil
 end
 
+def user_home
+  # this check is needed as the new user won't exit yet
+  # in why_run mode, causing an uncaught ArgumentError exception
+  new_resource.home || Etc.getpwnam(new_resource.username).dir
+rescue ArgumentError
+  nil
+end
+
+
 def user_resource(exec_action)
   # avoid variable scoping issues in resource block
   my_home, my_shell, manage_home, non_unique = @my_home, @my_shell, @manage_home, @non_unique
