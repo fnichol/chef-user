@@ -255,11 +255,12 @@ def keypair_resource(exec_action)
     # avoid variable scoping issues in resource block
     key_name, key_content = name, key
 
-    home = Etc.getpwnam(new_resource.username).dir
+    home = user_home
+    resource_gid = user_gid
     r = file ::File.join(home, '.ssh', name) do
       content   key_content + "\n"
       owner     new_resource.username
-      group     Etc.getpwnam(new_resource.username).gid
+      group     resource_gid
       mode      '0600' unless key_name =~ /.pub$/
       sensitive true
       action    :nothing
