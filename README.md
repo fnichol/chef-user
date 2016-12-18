@@ -1,6 +1,6 @@
 # <a name="title"></a> User Chef Cookbook
 
-[![Build Status](https://secure.travis-ci.org/fnichol/chef-user.png?branch=master)](http://travis-ci.org/fnichol/chef-user)
+[![Build Status](https://secure.travis-ci.org/fnichol/chef-user.svg?branch=master)](http://travis-ci.org/fnichol/chef-user)
 
 ## <a name="description"></a> Description
 
