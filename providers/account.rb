@@ -120,15 +120,20 @@ end
 def user_resource(exec_action)
   # avoid variable scoping issues in resource block
   my_home, my_shell, manage_home, non_unique = @my_home, @my_shell, @manage_home, @non_unique
-  my_dir = ::File.dirname(my_home)
 
-  r = directory "#{my_home} parent directory" do
-    path my_dir
-    recursive true
-    action    :nothing
+  # Only create parent home directory if home directory was manually specified.
+  # The user (and its home directory) might not exist yet.
+  if my_home
+    my_dir = ::File.dirname(my_home)
+
+    r = directory "#{my_home} parent directory" do
+      path my_dir
+      recursive true
+      action    :nothing
+    end
+    r.run_action(:create) unless exec_action == :remove
+    new_resource.updated_by_last_action(true) if r.updated_by_last_action?
   end
-  r.run_action(:create) unless exec_action == :remove
-  new_resource.updated_by_last_action(true) if r.updated_by_last_action?
 
   r = user new_resource.username do
     comment   new_resource.comment  if new_resource.comment
@@ -144,6 +149,9 @@ def user_resource(exec_action)
   end
   r.run_action(exec_action)
   new_resource.updated_by_last_action(true) if r.updated_by_last_action?
+
+  # Update @my_home variable, as the home dir might just have been created
+  @my_home = user_home
 
   # fixes CHEF-1699
   Etc.endgrent
