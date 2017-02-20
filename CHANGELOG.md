@@ -1,3 +1,42 @@
+## 0.7.0 / 2017-02-20
+
+### Improvements
+
+* Support providing an `ssh_keypair` attribute` to the `user_account` LWRP; this allows you to deploy the user's key using Chef ([@chr4][])
+* Remove cases where we were cloning resources to remove the relevant deprecation warnings ([@chasebolt][])
+
+## 0.6.0 / 2016-11-19
+
+### Improvements
+
+* changes to remove Chef 13 deprecation warnings by [@jeunito][]:
+  * use `node['platform']` instead of `platform`
+  * use `manage_home` and `non_unqiue` `attributes for the `user` LWRP instead of the `supports` Hash
+
+## 0.5.1 / 2016-11-04
+
+### Bug Fixes
+
+* Fix incorrect `source_url` value in the `metadata.rb`  file
+
+## 0.5.0 / 2016-11-04
+
+### Bug Fixes
+
+* Fix an error in the LWRP when a --why-run invocation is invoked before the user has been created (PR #89 by [@theckman][])
+
+### Improvements
+
+* Add a groups resource to the LWRP to allow the user to be added to additional groups upon creation (PR #96 by [@acqant][])
+* Add issues_url and source_url to the metadata file
+* Fix tests and dependencies to work with Ruby 2.1.4 (version shipped with Chef 12.1.0)
+
+
+## 0.3.0 - 0.4.2 (Proper Release Hiatus)
+While there were version bumps of the `metadata.rb` file during this period, there were
+no official releases. The changes weren't clearly documented. We should go back and fill
+in the information about the changes in this period.
+
 ## 0.3.0 / 2012-07-24
 
 ### Improvements
