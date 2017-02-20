@@ -39,6 +39,7 @@ end
 action :create do # ~FC017: LWRP does not notify when updated
   user_resource             :create
   home_dir_resource         :create
+  home_ssh_dir_resource     :create if @ssh_keygen || !new_resource.ssh_keys.empty?
   authorized_keys_resource  :create
   keygen_resource           :create
   group_resource            :create
@@ -54,6 +55,7 @@ end
 action :modify do # ~FC017: LWRP does not notify when updated
   user_resource             :modify
   home_dir_resource         :create
+  home_ssh_dir_resource     :create if @ssh_keygen || !new_resource.ssh_keys.empty?
   authorized_keys_resource  :create
   keygen_resource           :create
   keypair_resource          :create
@@ -62,6 +64,7 @@ end
 action :manage do # ~FC017: LWRP does not notify when updated
   user_resource             :manage
   home_dir_resource         :create
+  home_ssh_dir_resource     :create if @ssh_keygen || !new_resource.ssh_keys.empty?
   authorized_keys_resource  :create
   keygen_resource           :create
   keypair_resource          :create
@@ -70,6 +73,7 @@ end
 action :lock do # ~FC017: LWRP does not notify when updated
   user_resource             :lock
   home_dir_resource         :create
+  home_ssh_dir_resource     :create if @ssh_keygen || !new_resource.ssh_keys.empty?
   authorized_keys_resource  :create
   keygen_resource           :create
   keypair_resource          :create
@@ -78,6 +82,7 @@ end
 action :unlock do # ~FC017: LWRP does not notify when updated
   user_resource             :unlock
   home_dir_resource         :create
+  home_ssh_dir_resource     :create if @ssh_keygen || !new_resource.ssh_keys.empty?
   authorized_keys_resource  :create
   keygen_resource           :create
   keypair_resource          :create
@@ -193,8 +198,6 @@ def authorized_keys_resource(exec_action)
   # avoid variable scoping issues in resource block
   ssh_keys = Array(new_resource.ssh_keys)
   unless ssh_keys.empty?
-    home_ssh_dir_resource(exec_action)
-
     resource_gid = user_gid
     r = template "#{@my_home}/.ssh/authorized_keys" do
       cookbook    'user'
@@ -230,7 +233,6 @@ def keygen_resource(exec_action)
 
     creates   "#{my_home}/.ssh/id_rsa"
   end
-  home_ssh_dir_resource(exec_action)
   e.run_action(:run) if @ssh_keygen && exec_action == :create
   new_resource.updated_by_last_action(true) if e.updated_by_last_action?
 
