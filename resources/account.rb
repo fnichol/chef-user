@@ -35,6 +35,7 @@ attribute :create_group,  :default => nil
 attribute :ssh_keys,      :kind_of => [Array,String], :default => []
 attribute :groups,        :kind_of => [Array,String], :default => []
 attribute :ssh_keygen,    :default => nil
+attribute :ssh_keypair,   :kind_of => Hash, :default => {}
 
 def initialize(*args)
   super
