@@ -2,7 +2,7 @@ include_recipe 'user'
 
 user_account 'hsolo' do
   comment   'Han Solo'
-  ssh_keys  ['key111...', 'key222...']
+  ssh_keys  ['ssh-rsa AAAA111', 'ssh-ed25519 AAAA222']
   home      '/opt/hoth/hsolo'
 end
 

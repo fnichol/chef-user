@@ -24,8 +24,8 @@ describe 'chef-user-test::default' do
     it { should be_directory }
   end
   describe file('/opt/hoth/hsolo/.ssh/authorized_keys') do
-    its(:content) { should match /key111\.\.\./ }
-    its(:content) { should match /key222\.\.\./ }
+    its(:content) { should match 'ssh-rsa AAAA111' }
+    its(:content) { should match 'ssh-ed25519 AAAA222' }
   end
 
 
